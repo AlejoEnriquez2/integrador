@@ -13,5 +13,5 @@ export class ServicioService {
     return this.afs.collection('servicios',
     ref => ref.orderBy('tipo', 'asc')).valueChanges();
   }
-  
+
 }

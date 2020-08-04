@@ -9,4 +9,15 @@
 
 <ion-content>
 
+    <ion-list>
+        <ion-item *ngFor='let servicio of servicios |async; trackBy: trackByFn'>
+            <ion-avatar slot="start">
+                <img [src]="servicio.url" />
+            </ion-avatar>
+            <ion-label (click)="abrirServicio(servicio.uid)">
+                <h3>{{servicio.tipo}}</h3>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+
 </ion-content>

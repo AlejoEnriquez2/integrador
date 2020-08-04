@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>direccion</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+
+        <ion-item>
+            <ion-label position="floating">Calle principal</ion-label>
+            <ion-input required type="text" [(ngModel)]="direccion.principal"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Calle secundaria</ion-label>
+            <ion-input required type="text" [(ngModel)]="direccion.secundaria"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Referencia</ion-label>
+            <ion-input required type="text" [(ngModel)]="direccion.referencia"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Edificio</ion-label>
+            <ion-input required type="text" [(ngModel)]="direccion.edificio"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Zona</ion-label>
+            <ion-input required type="text" [(ngModel)]="direccion.zona"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+        <ion-button expand="block" type="submit" (click)="agregarDireccion()" class="ion-no-margin">Finalizar</ion-button>
+    </div>
+</ion-content>

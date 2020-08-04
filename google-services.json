@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "509137366255",
+    "firebase_url": "https://contactosdb-e7de3.firebaseio.com",
+    "project_id": "contactosdb-e7de3",
+    "storage_bucket": "contactosdb-e7de3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509137366255:android:5ea17011c740f52f8a7f1a",
+        "android_client_info": {
+          "package_name": "com.tucontacto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509137366255-q369c38c4148702qlqk4vk91b7g7k2tb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfgpcsRrGtR0DCQS37WQDSXBE8s_sgZMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509137366255-q369c38c4148702qlqk4vk91b7g7k2tb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

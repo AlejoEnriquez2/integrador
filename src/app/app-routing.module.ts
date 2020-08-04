@@ -10,7 +10,19 @@ const routes: Routes = [
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+  },  {
+    path: 'registro',
+    loadChildren: () => import('./shared/pages/registro/registro.module').then( m => m.RegistroPageModule)
+  },
+  {
+    path: 'inicio',
+    loadChildren: () => import('./shared/pages/inicio/inicio.module').then( m => m.InicioPageModule)
+  },
+  {
+    path: 'direccion',
+    loadChildren: () => import('./shared/pages/direccion/direccion.module').then( m => m.DireccionPageModule)
   }
+
 ];
 
 @NgModule({

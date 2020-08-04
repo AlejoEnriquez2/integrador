@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-folder',
@@ -7,12 +8,26 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
-  public folder: string;
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  correo: string;
+  contrasena: string;
 
-  ngOnInit() {
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+  constructor(private auth: AuthService, 
+    private router: Router) { }
+
+  ngOnInit() {}
+
+  async login() {
+    let error = await this.auth.emailPasswordLogin(this.correo, this.contrasena);
+    if (error === undefined) {
+      this.router.navigate(['inicio']);
+    } else {
+      alert(JSON.stringify(error));
+    }
+  }
+
+  registrarse() {
+    this.router.navigate(['registro']);
   }
 
 }

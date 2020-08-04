@@ -9,4 +9,9 @@ export class ServicioService {
 
   constructor(private afs: AngularFirestore) { }
 
+  getServicios(): Observable<any[]> {
+    return this.afs.collection('servicios',
+    ref => ref.orderBy('tipo', 'asc')).valueChanges();
+  }
+  
 }

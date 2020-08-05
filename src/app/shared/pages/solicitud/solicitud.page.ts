@@ -14,13 +14,15 @@ export class SolicitudPage implements OnInit {
   solicitud: Observable<any>
   usuario: Observable<any>
 
+  id: string
+
   constructor(private route: ActivatedRoute,
     private solicitudService: SolicitudService,
     private usuarioService: UsuarioService) { }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id')
-    this.solicitud = this.solicitudService.getSolicitud(id)
+    this.id = this.route.snapshot.paramMap.get('id')
+    this.solicitud = this.solicitudService.getSolicitud(this.id)
     this.solicitud.subscribe(data => {
       this.usuario = this.usuarioService.getUsuario(data.uid_usuario)
     })

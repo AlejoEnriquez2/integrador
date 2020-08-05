@@ -9,7 +9,6 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { tap, finalize, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ServicioService } from '../../services/servicio.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-solicitar',
@@ -32,8 +31,7 @@ export class SolicitarPage implements OnInit {
     public router: Router,
     private toastController: ToastController,
     private storage: AngularFireStorage,
-    private loadingCtrl: LoadingController,
-    fb: FormBuilder) { }
+    private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.auth.user.subscribe(data => {
@@ -49,7 +47,6 @@ export class SolicitarPage implements OnInit {
   }
 
   async upload() {
-
     if (this.solicitud.servicios == undefined) {
       alert("Debe seleccionar por lo menos un tipo de servicio")
     } else {
@@ -88,60 +85,6 @@ export class SolicitarPage implements OnInit {
     this.solicitudService.insertSolicitud(this.solicitud)
     this.toast('Servicio solicitado');
     this.router.navigate([`inicio`])
-  }
-
-  async getUrls(base64) {
-    const url = await this.solicitudService.startUpload(base64)
-    this.urls.push(url)
-  }
-
-  mostrar() {
-    console.log(this.urls)
-  }
-
-  async getUrls2() {
-    for (var i = 0; i < this.imagenes.length; i++) {
-      console.log(i)
-      const file = this.imagenes[i]
-      let byteCharacters = atob(file);
-      const path = `solicitudes/${new Date().getTime()}`;
-      let image = 'data:image/jpg;base64,'+file;
-        
-      try{
-        let ref = this.storage.ref(path);    
-        let task = ref.putString(image, 'data_url');
-        const loading = await this.loadingCtrl.create({
-          message: 'Espere, subiendo fotografía...'
-        });  
-        await loading.present(); 
-  
-        //Listener de progreso de carga
-        task.percentageChanges().pipe(
-          filter(val => val === 100),
-          tap(complete => {
-            setTimeout(() => {
-              loading.dismiss();
-            }, 3500);
-          })
-        ).subscribe();
-  
-        task.snapshotChanges().pipe(
-          finalize(() => {
-            let downloadURL = ref.getDownloadURL()
-            downloadURL.subscribe(url => {
-              console.log("download terminado ");
-              this.urls.push(url);
-              console.log('log de urls', this.urls)
-            });
-          })
-        )
-        .subscribe();
-      }catch(error){
-        console.error(JSON.stringify(error));
-        console.error("error ");
-      }
-    }
-    return
   }
 
   async toast(text: string, duration: number = 2500, position?) {

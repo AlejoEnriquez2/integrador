@@ -33,9 +33,9 @@ export class InicioEPage implements OnInit {
   trackByFn(index, obj) {
     return obj.uid;
   }
-  
-  abrirSolicitud(uid) {
 
+  abrirSolicitud(id) {
+    this.router.navigate([`solicitud/${id}`])
   }
 
 }

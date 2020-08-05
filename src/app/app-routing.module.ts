@@ -21,6 +21,14 @@ const routes: Routes = [
   {
     path: 'direccion',
     loadChildren: () => import('./shared/pages/direccion/direccion.module').then( m => m.DireccionPageModule)
+  },
+  {
+    path: 'solicitar',
+    loadChildren: () => import('./shared/pages/solicitar/solicitar.module').then( m => m.SolicitarPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./shared/pages/login/login.module').then( m => m.LoginPageModule)
   }
 
 ];

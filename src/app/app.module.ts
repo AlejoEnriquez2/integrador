@@ -15,8 +15,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
-import {Camera} from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,8 +36,10 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
   providers: [
     StatusBar,
     SplashScreen,
-    Camera,
+    File,
+    FileChooser,
     GooglePlus,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

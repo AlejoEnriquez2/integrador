@@ -18,7 +18,7 @@ export class FolderPage implements OnInit {
   ngOnInit() {}
 
   async login() {
-    let error = await this.auth.emailPasswordLogin(this.correo, this.contrasena);
+    let error = await this.auth.emailPasswordLogin(this.correo, this.contrasena, 'user');
     if (error === undefined) {
       this.router.navigate(['inicio']);
     } else {
@@ -28,6 +28,10 @@ export class FolderPage implements OnInit {
 
   registrarse() {
     this.router.navigate(['registro']);
+  }
+
+  loginEmpresa() {
+    this.router.navigate(['login']);
   }
 
 }

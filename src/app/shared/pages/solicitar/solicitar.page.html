@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>solicitar</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+
+        <ion-item>
+            <ion-label position="floating">Descripción</ion-label>
+            <ion-textarea rows="6" required type="text" [(ngModel)]="solicitud.descripcion"></ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <app-image-upload [icon]="'library'" [type]="'library'" (uploadFinished)="imagenCargada($event)"></app-image-upload>
+    <ion-button shape="round" (click)="upload()">subir</ion-button>
+    <ion-button shape="round" (click)="mostrar()">mostrar</ion-button>
+</ion-content>

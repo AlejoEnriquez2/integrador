@@ -24,7 +24,7 @@ export class RegistroPage implements OnInit {
     let error = await this.auth.signupUser(this.nombres + " " + this.apellidos, 
     this.correo, this.contrasena)
     if (error === undefined) {
-      this.auth.emailPasswordLogin(this.correo, this.contrasena).then(res => {
+      this.auth.emailPasswordLogin(this.correo, this.contrasena, 'user').then(res => {
         this.router.navigate(['direccion']);
       })
     } else {

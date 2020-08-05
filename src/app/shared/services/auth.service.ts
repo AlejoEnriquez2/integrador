@@ -107,11 +107,15 @@ export class AuthService {
 
   /***************************************   EMAIL LOGIN *********************************/
 
-  async emailPasswordLogin(email: string, password: string): Promise<void> {
+  async emailPasswordLogin(email: string, password: string, rol): Promise<void> {
     try {
       const emailCredential = firebase.auth.EmailAuthProvider.credential(email, password);
       const firebaseUser = await firebase.auth().signInWithCredential(emailCredential);
-      return await this.updateUserData(firebaseUser.user, "email");
+      if (rol === 'user') {
+        return await this.updateUserData(firebaseUser.user, "email");
+      } else {
+        return await this.updateUserDataE(firebaseUser.user, "email");
+      }
     } catch (err) {
       return err;
     } 
@@ -141,6 +145,7 @@ export class AuthService {
       //Crear cuenta
       data = {
         uid: user.uid,
+        rol: 'user',
         email: user.email || null,
         displayName: user.displayName || '',
         photoURL: user.photoURL || "https://goo.gl/7kz9qG",
@@ -154,6 +159,38 @@ export class AuthService {
       //Actualizar cuenta
       data = {
         uid: user.uid,
+        rol: 'user',
+        email: user.email || null,
+        displayName: user.displayName || '',
+        photoURL: user.photoURL || "https://goo.gl/7kz9qG",
+        provider: provider,
+        lastLogin: new Date(Number(user.lastLoginAt)) || new Date()
+      };
+    }
+
+    console.log("data", JSON.stringify(data))
+    const userRef = this.afs.collection<any>('users');
+
+    return userRef.doc(`${user.uid}`).set(data, { merge: true });
+  } 
+
+  // Guardar datos del usuario en Firestore
+  async updateUserDataE(usertemp: any, provider: any) {
+    console.log("update", JSON.stringify(usertemp));
+    const doc: any = await this.userExists(usertemp.email);
+    let data: any;
+    let user: any = JSON.parse(JSON.stringify(usertemp));
+
+    console.log("doc", JSON.stringify(doc));
+    if (doc.rol != "employee") {
+      throw { error_code: 998, error_message: "Acceso denegado, su cuenta no es de empresa." };
+    } else if (doc.active == false) {
+      throw { error_code: 999, error_message: "Acceso denegado, servicio deshabilitado, consulte con el administrador." };
+    } else {
+      //Actualizar cuenta
+      data = {
+        uid: user.uid,
+        rol: 'employee',
         email: user.email || null,
         displayName: user.displayName || '',
         photoURL: user.photoURL || "https://goo.gl/7kz9qG",

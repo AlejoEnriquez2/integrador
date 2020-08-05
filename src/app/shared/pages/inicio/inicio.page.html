@@ -1,0 +1,25 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Inicio</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-button shape="round" (click)="solicitarServicio()">Solicitar servicio</ion-button>
+
+    <ion-list>
+        <ion-item *ngFor='let servicio of servicios |async; trackBy: trackByFn'>
+            <ion-avatar slot="start">
+                <img [src]="servicio.url" />
+            </ion-avatar>
+            <ion-label (click)="abrirServicio(servicio.uid)">
+                <h3>{{servicio.tipo}}</h3>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+
+</ion-content>

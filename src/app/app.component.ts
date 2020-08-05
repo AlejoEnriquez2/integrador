@@ -85,4 +85,9 @@ export class AppComponent implements OnInit {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
   }
+
+  async logout() {
+    await this.auth.logout();
+    this.router.navigate(['folder/Inbox']);
+  }
 }

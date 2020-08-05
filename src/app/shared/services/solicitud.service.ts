@@ -3,9 +3,9 @@ import { Solicitud } from '../models/solicitud';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { LoadingController } from '@ionic/angular';
-import { tap, finalize, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import {File} from "@ionic-native/file/ngx";
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -179,5 +179,17 @@ export class SolicitudService {
           resolve(null);
         });
     });
+  }
+
+  fileSize(sizeInBytes: number) {
+    const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    let power = Math.round(Math.log(sizeInBytes) / Math.log(1024));
+    power = Math.min(power, units.length - 1);
+
+    const size = sizeInBytes / Math.pow(1024, power); // size in new units
+    const formattedSize = Math.round(size * 100) / 100; // keep up to 2 decimals
+    const unit = units[power];
+
+    return size ? `${formattedSize} ${unit}` : '0';
   }
 }

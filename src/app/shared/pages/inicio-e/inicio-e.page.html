@@ -10,11 +10,11 @@
 <ion-content>
 
     <ion-list>
-        <ion-item *ngFor='let solicitud of solicitudes |async; trackBy: trackByFn'>
+        <ion-item *ngFor='let solicitud of solicitudes |async; trackBy: trackByFn' (click)="abrirSolicitud(solicitud.uid)">
             <ion-thumbnail slot="start">
                 <ion-img [src]="solicitud.galeria_antes[0]"></ion-img>
             </ion-thumbnail>
-            <ion-label (click)="abrirSolicitud(solicitud.uid)">
+            <ion-label>
                 <ion-label class="ion-text-wrap">{{solicitud.descripcion}}</ion-label>
                 <h2>{{solicitud.fecha_inicio}}</h2>
             </ion-label>

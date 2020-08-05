@@ -10,7 +10,8 @@ const routes: Routes = [
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  },  {
+  },
+  {
     path: 'registro',
     loadChildren: () => import('./shared/pages/registro/registro.module').then( m => m.RegistroPageModule)
   },
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: 'inicio-e',
     loadChildren: () => import('./shared/pages/inicio-e/inicio-e.module').then( m => m.InicioEPageModule)
+  },
+  {
+    path: 'solicitud/:id',
+    loadChildren: () => import('./shared/pages/solicitud/solicitud.module').then( m => m.SolicitudPageModule)
   }
 
 ];

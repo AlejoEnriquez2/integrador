@@ -9,6 +9,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 })
 export class ImageUploadComponent implements OnInit {
 
+  n: number = 0;
+
   @Input() type:string;
   @Input() icon:string;
   @Output() uploadFinished = new EventEmitter<any>();
@@ -18,33 +20,36 @@ export class ImageUploadComponent implements OnInit {
   ngOnInit() {}
 
   async captureAndUpload(){
-    console.log("camera");
-    const options: CameraOptions = {
-      quality: 33,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      sourceType: this.type=='camera'?this.camera.PictureSourceType.CAMERA:this.camera.PictureSourceType.PHOTOLIBRARY
-    } 
-
-    console.log("options", options);
-    const file = await this.camera.getPicture(options);
     
-    let byteCharacters = atob(file);
-    const path = `solicitudes/${new Date().getTime()}`;
-    let image = 'data:image/jpg;base64,'+file;
+    if (this.n >= 6) {
+      alert("Se pueden subir hasta 6 imágnes")
+    } else {
+      const options: CameraOptions = {
+        quality: 33,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: this.type=='camera'?this.camera.PictureSourceType.CAMERA:this.camera.PictureSourceType.PHOTOLIBRARY
+      } 
 
-    const data = {
-      ref: path,
-      type: "image",
-      uploaderType: "client",
-      url: null,
-      name: "image",
-      file: image,
-      size: this.fileSize(Number(byteCharacters.length))
+      const file = await this.camera.getPicture(options);
+      
+      let byteCharacters = atob(file);
+      const path = `solicitudes/${new Date().getTime()}`;
+      let image = 'data:image/jpg;base64,'+file;
+
+      const data = {
+        ref: path,
+        type: "image",
+        uploaderType: "client",
+        url: null,
+        name: "image",
+        file: image,
+        size: this.fileSize(Number(byteCharacters.length))
+      }
+      this.n = this.n + 1;
+      this.uploadFinished.emit(data);
     }
-    
-    this.uploadFinished.emit(data);
   }
 
   fileSize(sizeInBytes: number) {
@@ -58,7 +63,4 @@ export class ImageUploadComponent implements OnInit {
 
     return size ? `${formattedSize} ${unit}` : '0';
   }
-
-  
-
 }

@@ -66,11 +66,14 @@ export class AppComponent implements OnInit {
       this.splashScreen.hide();
 
       this.auth.getCurrentUser().then(user => {
-        console.log(user);
         this.user = this.auth.user;
-        
+        console.log('rol', user.rol)
         if (user) {
-          this.router.navigate(['inicio']);
+          if (user.rol == 'user')
+            this.router.navigate(['inicio']);
+          else
+            this.router.navigate(['inicio-e']);
+
         } else {
           this.router.navigate(['folder/Inbox']);
         }

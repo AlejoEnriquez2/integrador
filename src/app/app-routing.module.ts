@@ -29,6 +29,10 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./shared/pages/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'inicio-e',
+    loadChildren: () => import('./shared/pages/inicio-e/inicio-e.module').then( m => m.InicioEPageModule)
   }
 
 ];

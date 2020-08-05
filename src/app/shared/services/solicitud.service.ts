@@ -4,6 +4,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { LoadingController } from '@ionic/angular';
 import { tap, finalize, filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import {File} from "@ionic-native/file/ngx";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,8 @@ export class SolicitudService {
 
   constructor(private afs: AngularFirestore,
     private storage: AngularFireStorage,
-    private loadingCtrl: LoadingController) { }
+    private loadingCtrl: LoadingController,
+    private file: File) { }
 
   insertSolicitud(solicitud: Solicitud) {
     const refSolicitud = this.afs.collection('solicitudes')
@@ -21,6 +24,13 @@ export class SolicitudService {
     refSolicitud.doc(solicitud.uid).set(param, {merge: true})
   }
 
+  getSolicitudes(): Observable<any[]> {
+    return this.afs.collection('solicitudes',
+    ref => ref.where("estado", "==", "solicitando")).valueChanges();
+  }
+
+
+  
   async startUpload(file: string){
     let byteCharacters = atob(file);
     const path = `solicitudes/${new Date().getTime()}`;
@@ -77,4 +87,76 @@ export class SolicitudService {
     return size ? `${formattedSize} ${unit}` : '0';
   }
 
+
+
+
+
+
+
+
+  
+  uploadFiles(files: any[]) {
+    return Promise.all(
+      files.map(async file => {
+        if (file.type === "image") return await this.imageUpload(file);
+        else return await this.fileUpload(file);
+      })
+    )
+      .then(values => {
+        return values;
+      })
+      .catch(err => {
+        console.error("Error" , JSON.stringify(err));
+        return null;
+      });
+  }
+
+  async imageUpload(file) {
+    return await new Promise(async (resolve, reject) => {
+      let ref = this.storage.ref(file.ref);
+      let task: any = await ref.putString(file.file, "data_url");
+
+      let downloadURL = ref.getDownloadURL();
+      await downloadURL.subscribe(url => {
+        file.url = url;
+        file.file = null;
+        resolve(file);
+      });
+    });
+  }
+  
+  async fileUpload(file) {
+    return await new Promise(async (resolve, reject) => {
+      this.file
+        .resolveLocalFilesystemUrl(file.file)
+        .then(newUrl => {
+          let dirPath = newUrl.nativeURL;
+          let dirPathSegments = dirPath.split("/");
+          dirPathSegments.pop();
+          dirPath = dirPathSegments.join("/");
+          this.file.readAsArrayBuffer(dirPath, newUrl.name).then(async buffer => {
+            let blob = new Blob([buffer], {type: "audio/m4a"});
+            try {
+              let ref = this.storage.ref(file.ref);
+              let task: any = await ref.put(blob);
+
+              let downloadURL = ref.getDownloadURL();
+              await downloadURL.subscribe(url => {
+                file.url = url;
+                file.file = null;
+                file.size = this.fileSize(buffer.byteLength);
+                resolve(file);
+              });
+            } catch (err) {
+              console.error("Error" , JSON.stringify(err));
+              resolve(null);
+            }
+          });
+        })
+        .catch(error => {
+          console.error("Error" , JSON.stringify(error));
+          resolve(null);
+        });
+    });
+  }
 }

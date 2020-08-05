@@ -125,7 +125,6 @@ export class AuthService {
   //-------------------------------------
 
   userExists(email: string) {
-    console.log("userExists",email);
     return this.afs
       .collection("users", ref => ref.where("email", "==", email))
       .valueChanges()
@@ -135,12 +134,10 @@ export class AuthService {
 
   // Guardar datos del usuario en Firestore
   async updateUserData(usertemp: any, provider: any) {
-    console.log("update", JSON.stringify(usertemp));
     const doc: any = await this.userExists(usertemp.email);
     let data: any;
     let user: any = JSON.parse(JSON.stringify(usertemp));
 
-    console.log("doc", JSON.stringify(doc));
     if (doc == null || doc == "") {
       //Crear cuenta
       data = {
@@ -159,7 +156,6 @@ export class AuthService {
       //Actualizar cuenta
       data = {
         uid: user.uid,
-        rol: 'user',
         email: user.email || null,
         displayName: user.displayName || '',
         photoURL: user.photoURL || "https://goo.gl/7kz9qG",
@@ -176,13 +172,12 @@ export class AuthService {
 
   // Guardar datos del usuario en Firestore
   async updateUserDataE(usertemp: any, provider: any) {
-    console.log("update", JSON.stringify(usertemp));
     const doc: any = await this.userExists(usertemp.email);
     let data: any;
     let user: any = JSON.parse(JSON.stringify(usertemp));
 
-    console.log("doc", JSON.stringify(doc));
-    if (doc.rol != "employee") {
+    console.log(JSON.stringify(doc))
+    if (JSON.stringify(doc).includes('"rol":"user"')) {
       throw { error_code: 998, error_message: "Acceso denegado, su cuenta no es de empresa." };
     } else if (doc.active == false) {
       throw { error_code: 999, error_message: "Acceso denegado, servicio deshabilitado, consulte con el administrador." };

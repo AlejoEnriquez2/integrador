@@ -28,9 +28,35 @@ export class ImageUploadComponent implements OnInit {
     } 
 
     console.log("options", options);
-    const base64 = await this.camera.getPicture(options);
+    const file = await this.camera.getPicture(options);
     
-    this.uploadFinished.emit(base64);
+    let byteCharacters = atob(file);
+    const path = `solicitudes/${new Date().getTime()}`;
+    let image = 'data:image/jpg;base64,'+file;
+
+    const data = {
+      ref: path,
+      type: "image",
+      uploaderType: "client",
+      url: null,
+      name: "image",
+      file: image,
+      size: this.fileSize(Number(byteCharacters.length))
+    }
+    
+    this.uploadFinished.emit(data);
+  }
+
+  fileSize(sizeInBytes: number) {
+    const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    let power = Math.round(Math.log(sizeInBytes) / Math.log(1024));
+    power = Math.min(power, units.length - 1);
+
+    const size = sizeInBytes / Math.pow(1024, power); // size in new units
+    const formattedSize = Math.round(size * 100) / 100; // keep up to 2 decimals
+    const unit = units[power];
+
+    return size ? `${formattedSize} ${unit}` : '0';
   }
 
   

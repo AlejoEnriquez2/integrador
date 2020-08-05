@@ -7,6 +7,9 @@ import { ToastController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { tap, finalize, filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { ServicioService } from '../../services/servicio.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-solicitar',
@@ -19,21 +22,25 @@ export class SolicitarPage implements OnInit {
 
   imagenes: any = [];
   urls: any = [];
+  servicios: Observable<any[]>;
   solicitud: Solicitud = new Solicitud;
 
   constructor(private auth: AuthService,
     private file: File, 
     private solicitudService: SolicitudService,
+    private servicioservice: ServicioService,
     public router: Router,
     private toastController: ToastController,
     private storage: AngularFireStorage,
-    private loadingCtrl: LoadingController) { }
+    private loadingCtrl: LoadingController,
+    fb: FormBuilder) { }
 
   ngOnInit() {
     this.auth.user.subscribe(data => {
       this.user = data;
       this.solicitud.uid_usuario = data.uid;
     })
+    this.servicios = this.servicioservice.getServicios();
   }
 
   imagenCargada(e) {
@@ -42,24 +49,45 @@ export class SolicitarPage implements OnInit {
   }
 
   async upload() {
-    console.log(this.imagenes.length)
 
-    await this.getUrls2().then((er) => {
+    if (this.solicitud.servicios == undefined) {
+      alert("Debe seleccionar por lo menos un tipo de servicio")
+    } else {
+      console.log(this.imagenes.length)
 
+      if (this.imagenes.length > 0) {
+        this.solicitudService.uploadFiles(this.imagenes)
+        .then(async values => {
+          if (values == null) {
+            alert("error")
+            return
+          } else {
+            this.imagenes.map(async file => {
+              this.urls.push(file.url)
+            })
+            await this.guardarSolicitud()
+          }
+        })
+        .catch(err => {
+          console.error("Error ", JSON.stringify(err));
+          alert(JSON.stringify(err))
+        });
+      } else {
+        await this.guardarSolicitud();
+      }
+
+    }
+  }
+
+  guardarSolicitud() {
     this.solicitud.galeria_antes = this.urls
     var today = new Date()
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     this.solicitud.fecha_inicio = date
     this.solicitud.estado = 'solicitando'
-    console.log('solicitud')
-    console.log(this.solicitud)
-
     this.solicitudService.insertSolicitud(this.solicitud)
-    this.toast('Empleo creado exitosamente');
-    //this.router.navigate([`inicio`])
-
-    })
-   
+    this.toast('Servicio solicitado');
+    this.router.navigate([`inicio`])
   }
 
   async getUrls(base64) {

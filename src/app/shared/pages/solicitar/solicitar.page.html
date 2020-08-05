@@ -13,7 +13,16 @@
         </ion-item>
     </ion-list>
 
-    <app-image-upload [icon]="'library'" [type]="'library'" (uploadFinished)="imagenCargada($event)"></app-image-upload>
-    <ion-button shape="round" (click)="upload()">subir</ion-button>
-    <ion-button shape="round" (click)="mostrar()">mostrar</ion-button>
+    <ion-item>
+        <ion-label>Seleccionar servicios</ion-label>
+        <ion-select multiple [(ngModel)]="solicitud.servicios">
+            <ion-select-option *ngFor="let servicio of servicios | async" value="{{servicio.uid}}">
+                {{servicio.tipo}}
+            </ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <app-image-upload [icon]=" 'library' " [type]=" 'library' " (uploadFinished)="imagenCargada($event) "></app-image-upload>
+    <ion-button shape="round " (click)="upload() ">subir</ion-button>
+    <ion-button shape="round " (click)="mostrar() ">mostrar</ion-button>
 </ion-content>

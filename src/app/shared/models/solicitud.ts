@@ -9,6 +9,7 @@ export class Solicitud {
     fecha_cita: string;
     galeria_antes: [];
     galeria_despues: [];
+    servicios: [];
     comentario: string;
     calificacion: number
 }

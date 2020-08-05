@@ -19,9 +19,9 @@ export class LoginPage implements OnInit {
   }
 
   async login() {
-    let error = await this.auth.emailPasswordLogin(this.correo, this.contrasena, '');
+    let error = await this.auth.emailPasswordLogin(this.correo, this.contrasena, 'employee');
     if (error === undefined) {
-      this.router.navigate(['inicio']);
+      this.router.navigate(['inicio-e']);
     } else {
       alert(JSON.stringify(error));
     }

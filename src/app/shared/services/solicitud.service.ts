@@ -88,7 +88,28 @@ export class SolicitudService {
   }
 
 
+  getSolicitud(uid: string): Observable<any>{
+    let itemDoc = this.afs.doc<any>(`solicitudes/${uid}`);
+    return itemDoc.valueChanges();
+  }
 
+  async getSolicitudById(uid:string): Promise<Solicitud>{
+    try{
+      let aux:any = await this.afs.collection('solicitudes',
+      ref => ref.where('uid', '==', uid))
+      .valueChanges().pipe(first()).toPromise().then(doc => {
+        return doc;
+      }).catch(error => {
+        throw error;
+      });
+      if (aux.length == 0)
+        return undefined;
+      return aux[0];
+    } catch(error) {
+      console.error("Error", error);
+      throw error;
+    }
+  }
 
 
 

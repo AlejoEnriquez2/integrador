@@ -41,6 +41,10 @@ const routes: Routes = [
   },  {
     path: 'mensajes',
     loadChildren: () => import('./shared/pages/mensajes/mensajes.module').then( m => m.MensajesPageModule)
+  },
+  {
+    path: 'solicitudes',
+    loadChildren: () => import('./shared/pages/solicitudes/solicitudes.module').then( m => m.SolicitudesPageModule)
   }
 
 

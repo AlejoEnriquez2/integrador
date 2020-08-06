@@ -6,6 +6,7 @@ import { LoadingController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import {File} from "@ionic-native/file/ngx";
 import { first } from 'rxjs/operators';
+import { Respuesta } from '../models/respuesta';
 
 @Injectable({
   providedIn: 'root'
@@ -29,9 +30,24 @@ export class SolicitudService {
     ref => ref.where("estado", "==", "solicitando")).valueChanges();
   }
 
+  getMisRespuestas(uid_empresa: string): Observable<any[]> {
+    return this.afs.collection('solcitudes',
+    ref => ref.collection()).valueChanges();
+  }
+
   getSolicitud(uid: string): Observable<any>{
     let itemDoc = this.afs.doc<any>(`solicitudes/${uid}`);
     return itemDoc.valueChanges();
+  }
+
+  tieneRespuesta(uid_empresa: string, uid_solicitud: string) {
+    let bandera = false
+    const ref = this.afs.collection('solicitudes').doc(uid_solicitud)
+    return ref.collection('respuestas',
+    ref => ref.where("uid_empresa", "==", uid_empresa))
+    .valueChanges()
+    .pipe(first())
+    .toPromise();
   }
 
   async getSolicitudById(uid:string): Promise<Solicitud>{
@@ -128,4 +144,12 @@ export class SolicitudService {
 
     return size ? `${formattedSize} ${unit}` : '0';
   }
+
+  enviarRespuesta(respuesta: Respuesta) {
+    const refRespuesta = this.afs.collection('solicitudes')
+    respuesta.uid = this.afs.createId()
+    const param = JSON.parse(JSON.stringify(respuesta));
+    refRespuesta.doc(respuesta.uid_solicitud).collection<any>("respuestas").doc(respuesta.uid).set(param, {merge:true})
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SolicitudService } from '../../services/solicitud.service';
 import { UsuarioService } from '../../services/usuario.service';
@@ -16,9 +16,14 @@ export class SolicitudPage implements OnInit {
 
   id: string
 
+  class: string = ''
+  enviar: boolean = false
+  mensaje: boolean = true
+
   constructor(private route: ActivatedRoute,
     private solicitudService: SolicitudService,
-    private usuarioService: UsuarioService) { }
+    private usuarioService: UsuarioService, 
+    private router: Router) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')
@@ -26,6 +31,15 @@ export class SolicitudPage implements OnInit {
     this.solicitud.subscribe(data => {
       this.usuario = this.usuarioService.getUsuario(data.uid_usuario)
     })
+  }
+
+  enviarAyuda() {
+    this.enviar = true
+    this.mensaje = false
+  }
+
+  enviarMensaje() {
+    this.router.navigate(['mensajes']);
   }
 
 }

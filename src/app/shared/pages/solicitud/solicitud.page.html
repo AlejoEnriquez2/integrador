@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
         <ion-title>Solicitud</ion-title>
     </ion-toolbar>
 </ion-header>
@@ -27,6 +27,14 @@
         </ion-row>
     </ion-grid>
 
-    <ion-button shape="round" expand="block">Enviar mensaje</ion-button>
+    <ion-button shape="round" expand="block" [ngClass]="class" (click)="enviarAyuda()" [hidden]="enviar">¡Enviar ayuda!</ion-button>
+    <ion-item *ngIf="(usuario | async) as usuario" (click)="enviarMensaje()" [hidden]="mensaje">
+        <ion-label class="ion-text-wrap ion-text-center" color="secondary">
+            Gracias por tu ayuda! Puedes enviarle un mensaje a {{usuario.displayName}} aquí
+        </ion-label>
+    </ion-item>
 
+    <ion-label class="ion-text-center" [hidden]="mensaje" expand="block" color="tertiary">
+        Cancelar ayuda
+    </ion-label>
 </ion-content>

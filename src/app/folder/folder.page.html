@@ -1,31 +1,32 @@
 <ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-title>Iniciar sesión</ion-title>
+    <ion-toolbar color="primary">
+        <ion-title text-center>Iniciar Sesión</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+    <img class="logo" src=" assets/logo.jpg ">
+    <ion-list lines="full " class="ion-no-margin ion-no-padding ">
         <ion-item>
-            <ion-label position="floating">Correo</ion-label>
-            <ion-input required type="email" [(ngModel)]="correo"></ion-input>
+            <ion-label position="floating ">Correo</ion-label>
+            <ion-input required type="email " [(ngModel)]="correo "></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label position="floating">Contraseña</ion-label>
-            <ion-input required type="password" [(ngModel)]="contrasena"></ion-input>
+            <ion-label position="floating ">Contraseña</ion-label>
+            <ion-input required type="password " [(ngModel)]="contrasena "></ion-input>
         </ion-item>
     </ion-list>
 
-    <div class="ion-padding">
-        <ion-button expand="block" type="submit" (click)="login()" class="ion-no-margin">Iniciar Sesión</ion-button>
+    <div class="ion-padding ">
+        <ion-button expand="block " type="submit " (click)="login() " class="ion-no-margin ">Iniciar Sesión</ion-button>
     </div>
 
-    <div class="ion-padding">
-        <ion-label (click)="registrarse()">Registrarse</ion-label>
+    <div class="ion-padding ">
+        <ion-label (click)="registrarse() " color="secondary">Registrarme</ion-label>
     </div>
 
-    <div class="ion-padding">
-        <ion-label (click)="loginEmpresa()">Ingresar como Empresa</ion-label>
+    <div class="ion-padding ">
+        <ion-label (click)="loginEmpresa() " color="secondary">Ingresar como Empresa</ion-label>
     </div>
 
 </ion-content>

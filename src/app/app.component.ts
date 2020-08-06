@@ -67,7 +67,6 @@ export class AppComponent implements OnInit {
 
       this.auth.getCurrentUser().then(user => {
         this.user = this.auth.user;
-        console.log('rol', user.rol)
         if (user) {
           if (user.rol == 'user')
             this.router.navigate(['inicio']);

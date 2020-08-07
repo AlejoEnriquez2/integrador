@@ -3,4 +3,6 @@ export class Respuesta {
     uid_usuario: string;
     uid_empresa: string;
     uid_solicitud: string;
+    fecha;
+    mensaje: string = ""
 }

@@ -50,7 +50,11 @@ const routes: Routes = [
   {
     path: 'respuestas',
     loadChildren: () => import('./shared/pages/respuestas/respuestas.module').then( m => m.RespuestasPageModule)
+  },  {
+    path: 'trabajos',
+    loadChildren: () => import('./shared/pages/trabajos/trabajos.module').then( m => m.TrabajosPageModule)
   }
+
 
 
 ];

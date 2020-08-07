@@ -74,10 +74,17 @@ export class AppComponent implements OnInit {
   }
 
   async respuestas() {
+    this.selectedIndex = 100
     this.router.navigate(['respuestas']);
   }
 
   async solicitudes() {
+    this.selectedIndex = 100
     this.router.navigate(['solicitudes']);
+  }
+
+  async trabajos() {
+    this.selectedIndex = 101
+    this.router.navigate(['trabajos']);
   }
 }

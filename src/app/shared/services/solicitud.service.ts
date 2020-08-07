@@ -171,6 +171,8 @@ export class SolicitudService {
   }
 
   enviarRespuesta(respuesta: Respuesta) {
+    if (respuesta.mensaje == "")
+      respuesta.mensaje = "Hola! Me encantaría ayudarte."
     const refRespuesta = this.afs.collection('solicitudes')
     respuesta.uid = this.afs.createId()
     const param = JSON.parse(JSON.stringify(respuesta));

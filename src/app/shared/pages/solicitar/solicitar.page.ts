@@ -78,9 +78,9 @@ export class SolicitarPage implements OnInit {
 
   guardarSolicitud() {
     this.solicitud.galeria_antes = this.urls
-    var today = new Date()
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    this.solicitud.fecha_inicio = date
+    //var today = new Date()
+    //var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    this.solicitud.fecha_inicio = new Date()
     this.solicitud.estado = 'solicitando'
     this.solicitudService.insertSolicitud(this.solicitud)
     this.toast('Servicio solicitado');

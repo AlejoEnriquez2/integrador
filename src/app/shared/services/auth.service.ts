@@ -158,8 +158,8 @@ export class AuthService {
       data = {
         uid: user.uid,
         email: user.email || null,
-        displayName: user.displayName || '',
-        photoURL: user.photoURL || pathUser,
+        //displayName: user.displayName || '',
+        //photoURL: user.photoURL || pathUser,
         provider: provider,
         lastLogin: new Date(Number(user.lastLoginAt)) || new Date()
       };
@@ -178,7 +178,6 @@ export class AuthService {
     let data: any;
     let user: any = JSON.parse(JSON.stringify(usertemp));
 
-    console.log(JSON.stringify(doc))
     if (JSON.stringify(doc).includes('"rol":"user"')) {
       throw { error_code: 998, error_message: "Acceso denegado, su cuenta no es de empresa." };
     } else if (doc.active == false) {
@@ -189,8 +188,8 @@ export class AuthService {
         uid: user.uid,
         rol: 'employee',
         email: user.email || null,
-        displayName: user.displayName || '',
-        photoURL: user.photoURL || pathUser,
+        //displayName: user.displayName || '',
+        //photoURL: user.photoURL || pathUser,
         provider: provider,
         lastLogin: new Date(Number(user.lastLoginAt)) || new Date()
       };

@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>respuestas</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+        <ion-item *ngFor='let respusta of respuestas |async; trackBy: trackByFn'>
+            <ion-label>
+                <h2>{{respusta.uid}}</h2>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+
+    <ion-button (click)="mostrar()"></ion-button>
+
+</ion-content>

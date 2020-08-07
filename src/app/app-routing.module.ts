@@ -45,6 +45,10 @@ const routes: Routes = [
   {
     path: 'solicitudes',
     loadChildren: () => import('./shared/pages/solicitudes/solicitudes.module').then( m => m.SolicitudesPageModule)
+  },
+  {
+    path: 'respuestas',
+    loadChildren: () => import('./shared/pages/respuestas/respuestas.module').then( m => m.RespuestasPageModule)
   }
 
 

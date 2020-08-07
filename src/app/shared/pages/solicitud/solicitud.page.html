@@ -6,14 +6,16 @@
 
 <ion-content *ngIf="(solicitud | async) as solicitud">
 
-    <ion-item *ngIf="(usuario | async) as usuario">
-        <ion-avatar slot="start">
-            <img [src]="usuario.photoURL" />
-        </ion-avatar>
-        <ion-label>
-            <h3>{{usuario.displayName}}</h3>
-        </ion-label>
-    </ion-item>
+    <div *ngIf="(current_user | async)?.rol == 'employee'">
+        <ion-item *ngIf="(usuario | async) as usuario">
+            <ion-avatar slot="start">
+                <img [src]="usuario.photoURL" />
+            </ion-avatar>
+            <ion-label>
+                <h3>{{usuario.displayName}}</h3>
+            </ion-label>
+        </ion-item>
+    </div>
 
     <ion-item>
         <ion-label class="ion-text-wrap">{{solicitud.descripcion}}</ion-label>
@@ -27,14 +29,38 @@
         </ion-row>
     </ion-grid>
 
-    <ion-button shape="round" expand="block" [ngClass]="class" (click)="enviarAyuda()" [hidden]="enviar">¡Enviar ayuda!</ion-button>
-    <ion-item *ngIf="(usuario | async) as usuario" (click)="enviarMensaje()" [hidden]="mensaje">
-        <ion-label class="ion-text-wrap ion-text-center" color="secondary">
-            Gracias por tu ayuda! Puedes enviarle un mensaje a {{usuario.displayName}} aquí
-        </ion-label>
-    </ion-item>
+    <div *ngIf="(current_user | async)?.rol == 'employee'">
+        <ion-button shape="round" expand="block" (click)="enviarAyuda()" [hidden]="enviar">
+            ¡Enviar ayuda!
+        </ion-button>
 
-    <ion-label class="ion-text-center" [hidden]="mensaje" expand="block" color="tertiary">
-        Cancelar ayuda
-    </ion-label>
+        <ion-item *ngIf="(usuario | async) as usuario" (click)="enviarMensaje()" [hidden]="mensaje">
+            <ion-label class="ion-text-wrap ion-text-center" color="secondary">
+                Gracias por tu ayuda! Puedes enviarle un mensaje a {{usuario.displayName}} aquí
+            </ion-label>
+        </ion-item>
+
+        <ion-label class="ion-text-center" [hidden]="mensaje" expand="block" color="tertiary">
+            Cancelar ayuda
+        </ion-label>
+    </div>
+
+    <div *ngIf="(current_user | async)?.rol == 'user'">
+
+        <h2 color="primary">Respuestas</h2>
+        <ion-list>
+            <div *ngIf="no_respuestas == 0">
+                <ion-label>Todavía no recibes ninguna respuesta</ion-label>
+            </div>
+            <ion-item *ngFor='let empresa of empresas'>
+                <ion-label>
+                    <h2>{{empresa.displayName}}</h2>
+                    <h2>{{empresa.email}}</h2>
+                </ion-label>
+            </ion-item>
+
+        </ion-list>
+
+    </div>
+
 </ion-content>

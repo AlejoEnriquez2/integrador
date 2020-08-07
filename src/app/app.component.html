@@ -14,9 +14,23 @@
                     </ion-menu-toggle>
                 </ion-list>
 
+                <ion-list id="labels-list" *ngIf="(user | async)?.rol == 'employee'">
+                    <ion-item (click)="respuestas()" routerDirection="root">
+                        <ion-icon slot="start" ios="warning-outline" md="warning-sharp"></ion-icon>
+                        <ion-label>Mis Respuestas</ion-label>
+                    </ion-item>
+                </ion-list>
+
+                <ion-list id="labels-list" *ngIf="(user | async)?.rol == 'user'">
+                    <ion-item (click)="solicitudes()" routerDirection="root">
+                        <ion-icon slot="start" ios="warning-outline" md="warning-sharp"></ion-icon>
+                        <ion-label>Mis Solicitudes</ion-label>
+                    </ion-item>
+                </ion-list>
+
                 <ion-list id="labels-list">
                     <ion-item (click)="logout()" routerDirection="root">
-                        <ion-icon slot="start" ios="warning-outline" md="warning-sharp"></ion-icon>
+                        <ion-icon slot="start" ios="warning-outline" md="log-out"></ion-icon>
                         <ion-label>Logout</ion-label>
                     </ion-item>
                 </ion-list>

@@ -134,6 +134,7 @@ export class AuthService {
 
   // Guardar datos del usuario en Firestore
   async updateUserData(usertemp: any, provider: any) {
+    const pathUser = "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/solicitudes%2Fuser.JPG?alt=media&token=bc089e23-4b1b-4925-b67c-be6fdcd8acfd"
     const doc: any = await this.userExists(usertemp.email);
     let data: any;
     let user: any = JSON.parse(JSON.stringify(usertemp));
@@ -145,7 +146,7 @@ export class AuthService {
         rol: 'user',
         email: user.email || null,
         displayName: user.displayName || '',
-        photoURL: user.photoURL || "https://goo.gl/7kz9qG",
+        photoURL: user.photoURL || pathUser,
         provider: provider,
         lastLogin: new Date(Number(user.lastLoginAt)) || new Date(),
         createdAt: new Date(Number(user.createdAt)) || new Date()
@@ -158,7 +159,7 @@ export class AuthService {
         uid: user.uid,
         email: user.email || null,
         displayName: user.displayName || '',
-        photoURL: user.photoURL || "https://goo.gl/7kz9qG",
+        photoURL: user.photoURL || pathUser,
         provider: provider,
         lastLogin: new Date(Number(user.lastLoginAt)) || new Date()
       };
@@ -172,6 +173,7 @@ export class AuthService {
 
   // Guardar datos del usuario en Firestore
   async updateUserDataE(usertemp: any, provider: any) {
+    const pathUser = "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/solicitudes%2Fuser.JPG?alt=media&token=bc089e23-4b1b-4925-b67c-be6fdcd8acfd"
     const doc: any = await this.userExists(usertemp.email);
     let data: any;
     let user: any = JSON.parse(JSON.stringify(usertemp));
@@ -188,7 +190,7 @@ export class AuthService {
         rol: 'employee',
         email: user.email || null,
         displayName: user.displayName || '',
-        photoURL: user.photoURL || "https://goo.gl/7kz9qG",
+        photoURL: user.photoURL || pathUser,
         provider: provider,
         lastLogin: new Date(Number(user.lastLoginAt)) || new Date()
       };

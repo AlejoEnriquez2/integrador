@@ -21,32 +21,12 @@ export class AppComponent implements OnInit {
       icon: 'mail'
     },
     {
-      title: 'Outbox',
+      title: 'Mi Perfil',
       url: '/folder/Outbox',
-      icon: 'paper-plane'
-    },
-    {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
-    },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
+      icon: 'person'
     }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  public labels = ['About'];
 
   user: Observable<any>;
 
@@ -68,11 +48,11 @@ export class AppComponent implements OnInit {
       this.auth.getCurrentUser().then(user => {
         this.user = this.auth.user;
         if (user) {
-          if (user.rol == 'user')
+          if (user.rol == 'user') {
             this.router.navigate(['inicio']);
-          else
+          } else {
             this.router.navigate(['inicio-e']);
-
+          }
         } else {
           this.router.navigate(['folder/Inbox']);
         }
@@ -91,5 +71,13 @@ export class AppComponent implements OnInit {
   async logout() {
     await this.auth.logout();
     this.router.navigate(['folder/Inbox']);
+  }
+
+  async respuestas() {
+    this.router.navigate(['respuestas']);
+  }
+
+  async solicitudes() {
+    this.router.navigate(['solicitudes']);
   }
 }

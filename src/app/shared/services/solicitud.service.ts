@@ -5,7 +5,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { LoadingController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import {File} from "@ionic-native/file/ngx";
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Respuesta } from '../models/respuesta';
 
 @Injectable({
@@ -30,14 +30,39 @@ export class SolicitudService {
     ref => ref.where("estado", "==", "solicitando")).valueChanges();
   }
 
-  getMisRespuestas(uid_empresa: string): Observable<any[]> {
-    return this.afs.collection('solcitudes',
-    ref => ref.collection()).valueChanges();
+  getSolicitudByUsuario(uid_usuario: string): Observable<any[]> {
+    return this.afs.collection('solicitudes',
+    ref => ref.where("uid_usuario", "==", uid_usuario)).valueChanges();
+  }
+
+  getMisRespuestas(uid_empresa: string) {
+    return this.afs.collectionGroup('respuestas', ref =>
+    ref.where("uid_empresa", "==", uid_empresa))
+    .valueChanges()
   }
 
   getSolicitud(uid: string): Observable<any>{
     let itemDoc = this.afs.doc<any>(`solicitudes/${uid}`);
     return itemDoc.valueChanges();
+  }
+
+  getRespuestas(uid_solicitud: string): Observable<any>{
+    const ref = this.afs.collection('solicitudes').doc(uid_solicitud)
+    return ref.collection('respuestas').valueChanges()
+  }
+
+  getRespuestas2(uid_solicitud: string) {
+    console.log('getres2')
+    const ref = this.afs.collection('solicitudes').doc(uid_solicitud)
+    return ref.collection('respuestas').snapshotChanges().pipe(map(res => {
+      console.log('res2', res)
+    }))
+  }
+
+  getUsuariosByRespuesta(uid_list: any[]): Observable<any[]>  {
+    console.log('get ', uid_list)
+    return this.afs.collection('users', ref =>
+    ref.where("uid", "in", uid_list)).valueChanges()
   }
 
   tieneRespuesta(uid_empresa: string, uid_solicitud: string) {

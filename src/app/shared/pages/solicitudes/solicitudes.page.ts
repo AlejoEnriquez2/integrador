@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { SolicitudService } from '../../services/solicitud.service';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-solicitudes',
@@ -7,9 +11,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SolicitudesPage implements OnInit {
 
-  constructor() { }
+  solicitudes: Observable<any>
+  usuario: any
+
+  constructor(private solicitudService: SolicitudService,
+    private auth: AuthService,
+    public router: Router) { }
 
   ngOnInit() {
+    this.auth.user.subscribe(async data => {
+      this.usuario = data;
+      this.solicitudes = this.solicitudService.getSolicitudByUsuario(data.uid)
+    })
+  }
+
+  trackByFn(index, obj) {
+    return obj.uid;
+  }
+
+  abrirSolicitud(id) {
+    this.router.navigate([`solicitud/${id}`])
   }
 
 }

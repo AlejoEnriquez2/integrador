@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SolicitudService } from '../../services/solicitud.service';
+import { Respuesta } from '../../models/respuesta';
 
 @Component({
   selector: 'app-inicio-e',
@@ -11,17 +12,17 @@ import { SolicitudService } from '../../services/solicitud.service';
 })
 export class InicioEPage implements OnInit {
 
-  user: any;
+  user: Observable<any>;
   solicitudes: Observable<any[]>
 
   constructor(private auth: AuthService,
     private activatedRoute: ActivatedRoute,
     public router: Router,
-    private solicitudservice: SolicitudService) { }
+    public solicitudservice: SolicitudService) { }
 
   ngOnInit() {
-    this.auth.user.subscribe(data => {
-      this.user = data;
+    this.auth.getCurrentUser().then(user => {
+      this.user = this.auth.user;
     })
     this.mostrarSolicitudes();
   }
@@ -37,5 +38,14 @@ export class InicioEPage implements OnInit {
   abrirSolicitud(id) {
     this.router.navigate([`solicitud/${id}`])
   }
+/*
+  enviarAyuda(uid_usuario, uid_solicitud) {
+    let respuesta: Respuesta = new Respuesta
+    respuesta.uid_solicitud = uid_solicitud
+    respuesta.uid_usuario = uid_usuario
+    respuesta.uid_empresa = this.user.uid
+    
+    this.solicitudservice.enviarRespuesta(respuesta)
+  }*/
 
 }

@@ -38,8 +38,9 @@ const routes: Routes = [
   {
     path: 'solicitud/:id',
     loadChildren: () => import('./shared/pages/solicitud/solicitud.module').then( m => m.SolicitudPageModule)
-  },  {
-    path: 'mensajes',
+  },
+  {
+    path: 'mensajes/:id',
     loadChildren: () => import('./shared/pages/mensajes/mensajes.module').then( m => m.MensajesPageModule)
   },
   {

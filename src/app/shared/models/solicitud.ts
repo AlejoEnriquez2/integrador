@@ -4,9 +4,9 @@ export class Solicitud {
     uid_empleado: string;
     descripcion: string;
     estado: string;
-    fecha_inicio: string;
-    fecha_agenda: string;
-    fecha_cita: string;
+    fecha_inicio;
+    fecha_agenda;
+    fecha_cita;
     galeria_antes: [];
     galeria_despues: [];
     servicios: [];

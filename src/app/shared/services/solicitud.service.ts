@@ -32,7 +32,7 @@ export class SolicitudService {
 
   getSolicitudByUsuario(uid_usuario: string): Observable<any[]> {
     return this.afs.collection('solicitudes',
-    ref => ref.where("uid_usuario", "==", uid_usuario)).valueChanges();
+    ref => ref.where("uid_usuario", "==", uid_usuario).where("estado", "==", "solicitando")).valueChanges();
   }
 
   getMisRespuestas(uid_empresa: string) {
@@ -59,11 +59,11 @@ export class SolicitudService {
     }))
   }
 
-  getUsuariosByRespuesta(uid_list: any[]): Observable<any[]>  {
+  /*getUsuariosByRespuesta(uid_list: any[]): Observable<any[]>  {
     console.log('get ', uid_list)
     return this.afs.collection('users', ref =>
     ref.where("uid", "in", uid_list)).valueChanges()
-  }
+  }*/
 
   tieneRespuesta(uid_empresa: string, uid_solicitud: string) {
     let bandera = false
@@ -171,12 +171,18 @@ export class SolicitudService {
   }
 
   enviarRespuesta(respuesta: Respuesta) {
-    if (respuesta.mensaje == "")
+    if (respuesta.mensaje == "" || respuesta.mensaje == null)
       respuesta.mensaje = "Hola! Me encantaría ayudarte."
     const refRespuesta = this.afs.collection('solicitudes')
     respuesta.uid = this.afs.createId()
     const param = JSON.parse(JSON.stringify(respuesta));
     refRespuesta.doc(respuesta.uid_solicitud).collection<any>("respuestas").doc(respuesta.uid).set(param, {merge:true})
+  }
+
+  mergeSolicitud(solicitud: Solicitud) {
+    const ref = this.afs.collection('solicitudes')
+    const param = JSON.parse(JSON.stringify(solicitud));
+    ref.doc(solicitud.uid).set(param, {merge: true})
   }
 
 }

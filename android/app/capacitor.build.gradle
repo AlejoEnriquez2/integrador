@@ -14,7 +14,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-auth:15.0.1"
     implementation "com.google.android.gms:play-services-identity:15.0.1"
 }
-
+apply from: "../../node_modules/com-sarriaroman-photoviewer/src/android/photoviewer.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

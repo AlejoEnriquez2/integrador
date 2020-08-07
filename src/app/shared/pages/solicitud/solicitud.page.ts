@@ -7,6 +7,7 @@ import { Respuesta } from '../../models/respuesta';
 import { AuthService } from '../../services/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AlertController } from '@ionic/angular';
+import { Solicitud } from '../../models/solicitud';
 
 @Component({
   selector: 'app-solicitud',
@@ -30,7 +31,7 @@ export class SolicitudPage implements OnInit {
   mensaje: boolean = true
 
   respuesta: Respuesta = new Respuesta;
-  msg: string = '';
+  solicitudAceptada: Solicitud = new Solicitud;
 
   constructor(private afs: AngularFirestore,
     private route: ActivatedRoute,
@@ -48,7 +49,13 @@ export class SolicitudPage implements OnInit {
     this.solicitud.subscribe(data => {
       this.usuario = this.usuarioService.getUsuario(data.uid_usuario)
       this.respuesta.uid_usuario = data.uid_usuario
+      this.solicitudAceptada.uid_usuario = data.uid_usuario
+      this.solicitudAceptada.descripcion = data.descripcion
+      this.solicitudAceptada.fecha_inicio = data.fecha_inicio
+      this.solicitudAceptada.galeria_antes = data.galeria_antes
+      this.solicitudAceptada.servicios = data.servicios
     })
+    this.solicitudAceptada.uid = this.id
     
     //this.auth.user.subscribe(user => {
     //  this.current_user = user;
@@ -119,8 +126,7 @@ export class SolicitudPage implements OnInit {
             }, {
               text: 'Enviar!',
               handler: (alertData) => {
-                this.msg = alertData.msg;
-                this.enviarAyuda()
+                this.enviarAyuda(alertData.msg)
             }
             }
           ]
@@ -129,9 +135,9 @@ export class SolicitudPage implements OnInit {
     await alert.present();
   }
 
-  enviarAyuda() {
+  enviarAyuda(msg) {
     this.respuesta.fecha = new Date()
-    this.respuesta.mensaje = this.msg
+    this.respuesta.mensaje = msg
     this.solicitudService.enviarRespuesta(this.respuesta)
     this.cambiarEstado()
   }
@@ -147,6 +153,44 @@ export class SolicitudPage implements OnInit {
 
   verMas(solicitudUid, empresaUid) {
 
+  }
+
+  async aceptarAlert(uid_empresa) {
+    const alert = await this.alertController.create({
+      header: 'Agenda tu cita',
+      message: 'Indica la fecha para realizar el trabajo',
+      inputs: [
+        {
+          name: 'date',
+          type: 'date'
+        }],    
+       buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                console.log('Confirm Cancel');
+              }
+            }, {
+              text: 'Enviar!',
+              handler: (alertData) => {
+                this.aceptarEmpresa(alertData.date, uid_empresa)
+            }
+            }
+          ]
+    });
+
+    await alert.present();
+  }
+
+  aceptarEmpresa(fecha, uid_empresa) {
+    this.solicitudAceptada.estado = 'espera'
+    this.solicitudAceptada.fecha_agenda = new Date()
+    this.solicitudAceptada.fecha_cita = fecha
+    this.solicitudAceptada.uid_empleado = uid_empresa
+    this.solicitudService.mergeSolicitud(this.solicitudAceptada)
+    this.router.navigate(['trabajos']);
   }
 
 }

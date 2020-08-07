@@ -56,6 +56,12 @@
                 </div>
 
                 <ion-item-sliding *ngFor='let empresa of empresas' color="primary-tint">
+                    <ion-item-options side="start">
+                        <ion-item-option (click)="aceptarAlert(empresa.uid_sender)" color="secondary">
+                            Aceptar Empresa
+                        </ion-item-option>
+                    </ion-item-options>
+
                     <ion-item>
                         <ion-avatar slot="start">
                             <img [src]="empresa.URL_sender" />

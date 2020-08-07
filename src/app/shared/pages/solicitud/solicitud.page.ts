@@ -5,7 +5,9 @@ import { SolicitudService } from '../../services/solicitud.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { Respuesta } from '../../models/respuesta';
 import { AuthService } from '../../services/auth.service';
-import { map } from 'rxjs/operators';
+import { map, timestamp } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-solicitud',
@@ -16,7 +18,7 @@ export class SolicitudPage implements OnInit {
 
   solicitud: Observable<any>
   respuestas: Observable<any>
-  empresas 
+  empresas = []
   //empresas: { [uid: string]: any} = {}
   ids:any[] = []
   usuario: Observable<any>
@@ -29,12 +31,15 @@ export class SolicitudPage implements OnInit {
   mensaje: boolean = true
 
   respuesta: Respuesta = new Respuesta;
+  msg: string = '';
 
-  constructor(private route: ActivatedRoute,
+  constructor(private afs: AngularFirestore,
+    private route: ActivatedRoute,
     private solicitudService: SolicitudService,
     private usuarioService: UsuarioService, 
     private router: Router,
-    private auth: AuthService) { }
+    private auth: AuthService,
+    private alertController: AlertController) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')
@@ -45,6 +50,9 @@ export class SolicitudPage implements OnInit {
       this.usuario = this.usuarioService.getUsuario(data.uid_usuario)
       this.respuesta.uid_usuario = data.uid_usuario
     })
+    
+    //this.auth.user.subscribe(user => {
+    //  this.current_user = user;
     
     this.auth.getCurrentUser().then(user => {
       this.current_user = this.auth.user;
@@ -65,29 +73,22 @@ export class SolicitudPage implements OnInit {
           //obtener número de respuestas
           this.respuestas.subscribe(data => {
             this.no_respuestas = data.length
-            this.empresas = []
+            this.empresas.splice(0, this.empresas.length)
             for (let aux of data) {
               let u = this.usuarioService.getUsuario(aux.uid_empresa)
               u.subscribe(datos => {
-                this.empresas.push(datos)
-                console.log('aux', this.empresas)
+                let nueva_respuesta = {
+                  uid_sender: datos.uid,
+                  name_sender: datos.displayName,
+                  calificacion_sender: datos.calificacion,
+                  URL_sender: datos.photoURL,
+                  mensaje: aux.mensaje
+                }
+                this.empresas.push(nueva_respuesta)
+                //this.empresas[aux.uid_empresa] = datos
               })
             }
           })
-    
-          /*this.respuestas.forEach(respuesta => {
-            console.log("res", respuesta)
-            console.log("res 0", respuesta[0].uid_empresa)
-            let u = this.usuarioService.getUsuario(respuesta[0].uid_empresa)
-            u.subscribe(datos => {
-              //this.usuarios.push(datos)
-              this.empresas[respuesta[0].uid_empresa] = datos
-            })
-          })*/
-
-          console.log('usuarios', this.empresas)
-          //this.usuarios = this.solicitudService.getUsuariosByRespuesta(this.ids)
-
         }
 
       })
@@ -98,7 +99,40 @@ export class SolicitudPage implements OnInit {
     return obj.uid;
   }
 
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Puedes enviar un mensaje!',
+      message: 'Indica en qué puedes ayudar, explica por qué eres el mejor para este trabajo (:',
+      inputs: [
+        {
+          name: 'msg',
+          type: 'textarea',
+          placeholder: 'Hola! Me encantaría ayudarte.'
+        }],    
+       buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {
+                console.log('Confirm Cancel');
+              }
+            }, {
+              text: 'Enviar!',
+              handler: (alertData) => {
+                this.msg = alertData.msg;
+                this.enviarAyuda()
+            }
+            }
+          ]
+    });
+
+    await alert.present();
+  }
+
   enviarAyuda() {
+    this.respuesta.fecha = new Date()
+    this.respuesta.mensaje = this.msg
     this.solicitudService.enviarRespuesta(this.respuesta)
     this.cambiarEstado()
   }
@@ -108,8 +142,12 @@ export class SolicitudPage implements OnInit {
     this.mensaje = false
   }
 
-  enviarMensaje() {
-    this.router.navigate(['mensajes']);
+  enviarMensaje(empresaUid) {
+    this.router.navigate([`mensajes/${empresaUid}`])
+  }
+
+  verMas(solicitudUid, empresaUid) {
+
   }
 
 }

@@ -19,6 +19,7 @@ import { File } from '@ionic-native/file/ngx';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 
 @NgModule({

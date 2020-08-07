@@ -30,9 +30,9 @@ export class SolicitudService {
     ref => ref.where("estado", "==", "solicitando")).valueChanges();
   }
 
-  getSolicitudByUsuario(uid_usuario: string): Observable<any[]> {
+  getSolicitudByUsuario(tipo: string, uid_usuario: string, estado: string): Observable<any[]> {
     return this.afs.collection('solicitudes',
-    ref => ref.where("uid_usuario", "==", uid_usuario).where("estado", "==", "solicitando")).valueChanges();
+    ref => ref.where(tipo, "==", uid_usuario).where("estado", "==", estado)).valueChanges();
   }
 
   getMisRespuestas(uid_empresa: string) {

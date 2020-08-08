@@ -66,7 +66,19 @@ const routes: Routes = [
   {
     path: 'perfil/:id',
     loadChildren: () => import('./shared/pages/perfil/perfil.module').then( m => m.PerfilPageModule)
+  },  {
+    path: 'about',
+    loadChildren: () => import('./shared/pages/about/about.module').then( m => m.AboutPageModule)
+  },
+  {
+    path: 'tutorial',
+    loadChildren: () => import('./shared/pages/tutorial/tutorial.module').then( m => m.TutorialPageModule)
+  },
+  {
+    path: 'tutorial-empresas',
+    loadChildren: () => import('./shared/pages/tutorial-empresas/tutorial-empresas.module').then( m => m.TutorialEmpresasPageModule)
   }
+
 
 
 

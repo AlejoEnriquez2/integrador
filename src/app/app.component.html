@@ -88,13 +88,35 @@
                 </ion-list>
 
                 <ion-list id="labels-list">
-                    <ion-list-header>Labels</ion-list-header>
-
-                    <ion-item *ngFor="let label of labels" lines="none">
-                        <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-                        <ion-label>{{ label }}</ion-label>
-                    </ion-item>
+                    <ion-menu-toggle id="labels-list">
+                        <ion-item (click)="selectedIndex = 104" routerDirection="root" [routerLink]="'about'" lines="none" detail="false" [class.selected]="selectedIndex == 104">
+                            <ion-icon slot="start" ios="alert-circle-outline" md="alert-circle-sharp"></ion-icon>
+                            <ion-label>Acerca De</ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
                 </ion-list>
+
+                <div *ngIf="user?.rol == 'user'">
+                    <ion-list id="labels-list">
+                        <ion-menu-toggle id="labels-list">
+                            <ion-item (click)="selectedIndex = 105" routerDirection="root" [routerLink]="'tutorial'" lines="none" detail="false" [class.selected]="selectedIndex == 105">
+                                <ion-icon slot="start" ios="help-outline" md="help-sharp"></ion-icon>
+                                <ion-label>Ayuda</ion-label>
+                            </ion-item>
+                        </ion-menu-toggle>
+                    </ion-list>
+                </div>
+
+                <div *ngIf="user?.rol == 'employee'">
+                    <ion-list id="labels-list">
+                        <ion-menu-toggle id="labels-list">
+                            <ion-item (click)="selectedIndex = 105" routerDirection="root" [routerLink]="'tutorial-empresas'" lines="none" detail="false" [class.selected]="selectedIndex == 105">
+                                <ion-icon slot="start" ios="help-outline" md="help-sharp"></ion-icon>
+                                <ion-label>Ayuda</ion-label>
+                            </ion-item>
+                        </ion-menu-toggle>
+                    </ion-list>
+                </div>
             </ion-content>
         </ion-menu>
         <ion-router-outlet id="main-content"></ion-router-outlet>

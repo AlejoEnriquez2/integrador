@@ -6,25 +6,15 @@
 
 <ion-content>
     <ion-list lines="full">
-        <ion-rating [(ngModel)]="rate" readonly="false" size="default" (ngModelChange)="onModelChange($event)"></ion-rating>
-        <!--ion-item>
-          <ion-label position="floating">Descripción</ion-label>
-          <ion-textarea rows="6" required type="text" [(ngModel)]="solicitud.descripcion"></ion-textarea>
-      </ion-item>
+        <ion-item>
+            <ion-label position="floating">Descripción</ion-label>
+            <ion-textarea rows="6" required type="text" [(ngModel)]="comentario.comentario"></ion-textarea>
+        </ion-item>
 
-      <ion-item>
-          <ion-label>Seleccionar servicios</ion-label>
-          <ion-select multiple [(ngModel)]="solicitud.servicios">
-              <ion-select-option *ngFor="let servicio of servicios | async" value="{{servicio.uid}}">
-                  {{servicio.tipo}}
-              </ion-select-option>
-          </ion-select>
-      </ion-item>
+        <app-image-upload [icon]=" 'library' " [type]=" 'library' " (uploadFinished)="imagenCargada($event) "></app-image-upload>
 
-      <app-image-upload [icon]=" 'library' " [type]=" 'library' " (uploadFinished)="imagenCargada($event) "></app-image-upload>
-
-      <ion-item>
-          <ion-button shape="round" size="default" (click)="upload() ">subir</ion-button>
-      </ion-item-->
+        <ion-item>
+            <ion-button shape="round" size="default" (click)="upload() ">subir</ion-button>
+        </ion-item>
     </ion-list>
 </ion-content>

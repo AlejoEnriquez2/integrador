@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import {File} from "@ionic-native/file/ngx";
 import { first, map } from 'rxjs/operators';
 import { Respuesta } from '../models/respuesta';
+import { Comentario } from '../models/comentario';
 
 @Injectable({
   providedIn: 'root'
@@ -183,6 +184,10 @@ export class SolicitudService {
     const ref = this.afs.collection('solicitudes')
     const param = JSON.parse(JSON.stringify(solicitud));
     ref.doc(solicitud.uid).set(param, {merge: true})
+  }
+
+  enviarCalificacion(solicitud: Solicitud, comentario: Comentario) {
+    
   }
 
 }

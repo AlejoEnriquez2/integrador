@@ -35,10 +35,13 @@
                 Puedes enviar el problema que tengas y uno de nuestros socios se pondrá en contacto contigo para solucionarlo!
             </ion-label>
         </ion-item>
-
-        <ion-item>
-            <ion-button size="default" shape="round" (click)="solicitarServicio()">Solicitar servicio</ion-button>
-        </ion-item>
+        <ng-container>
+            <ion-list style="text-align:center">
+                <ion-item >
+                    <ion-button size="default" shape="round" (click)="solicitarServicio()">Solicitar servicio</ion-button>
+                </ion-item>
+            </ion-list>
+        </ng-container>
     </ion-list>
 
 </ion-content>

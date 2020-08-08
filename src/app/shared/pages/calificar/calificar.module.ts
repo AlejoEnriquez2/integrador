@@ -9,6 +9,7 @@ import { CalificarPageRoutingModule } from './calificar-routing.module';
 import { CalificarPage } from './calificar.page';
 import { ImageUploadComponent } from '../../../components/image-upload/image-upload.component';
 import { IonicRatingModule } from 'ionic-rating';
+import { RatingComponent } from '../../../components/rating/rating.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { IonicRatingModule } from 'ionic-rating';
     IonicRatingModule,
     CalificarPageRoutingModule
   ],
-  declarations: [CalificarPage, ImageUploadComponent],
-  exports: [ImageUploadComponent]
+  declarations: [CalificarPage, ImageUploadComponent, RatingComponent],
+  exports: [ImageUploadComponent, RatingComponent]
 })
 export class CalificarPageModule {}

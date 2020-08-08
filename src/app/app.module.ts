@@ -20,7 +20,6 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
-import { IonicRatingModule } from 'ionic-rating';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,7 +41,6 @@ import { IonicRatingModule } from 'ionic-rating';
     GooglePlus,
     Camera,
     PhotoViewer,
-    IonicRatingModule,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

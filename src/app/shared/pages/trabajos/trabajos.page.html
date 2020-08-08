@@ -10,17 +10,25 @@
 <ion-content>
     <ion-list>
 
-        <div *ngFor='let trabajo of proximos' (click)="terminar(trabajo.uid_empresa, trabajo.uid_usuario, trabajo.uid)">
+        <div *ngFor='let trabajo of proximos'>
             <ion-item>
                 <ion-avatar slot="start">
                     <img [src]="trabajo.URL_empresa" />
                 </ion-avatar>
-                <ion-label>
+                <ion-label class="ion-text-wrap">
                     <h2>{{trabajo.name_empresa}}</h2>
                 </ion-label>
-                <ion-chip outline color="tertiary" slot="end">
-                    <ion-label>{{trabajo.fecha_cita}}</ion-label>
-                </ion-chip>
+
+                <ion-grid slot="end">
+                    <ion-col size="12" size-sm>
+                        <ion-chip outline color="tertiary">
+                            <ion-label>{{trabajo.fecha_cita}}</ion-label>
+                        </ion-chip>
+                    </ion-col>
+                    <ion-col size="12" size-sm>
+                        <ion-button shape="round" size="small" (click)="terminar(trabajo.uid_empresa, trabajo.uid_usuario, trabajo.uid)">completo</ion-button>
+                    </ion-col>
+                </ion-grid>
             </ion-item>
 
             <ion-item>

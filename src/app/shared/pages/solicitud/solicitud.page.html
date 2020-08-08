@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content *ngIf="(solicitud | async) as solicitud">
-    <div *ngIf="(current_user | async) as current_user">
+    <div *ngIf="(current_user) as current_user">
 
         <div *ngIf="current_user?.rol == 'employee'">
             <ion-item *ngIf="(usuario | async) as usuario">
@@ -38,7 +38,7 @@
 
             <ion-item *ngIf="(usuario | async) as usuario" (click)="enviarMensaje()" [hidden]="mensaje">
                 <ion-label class="ion-text-wrap ion-text-center" color="secondary">
-                    Gracias por tu ayuda! Puedes enviarle un mensaje a {{usuario.displayName}} aquí
+                    Gracias por tu ayuda! Tu respuesta se ha eviado a {{usuario.displayName}}.
                 </ion-label>
             </ion-item>
 

@@ -1,5 +1,9 @@
-<ion-button shape="round" (click)="captureAndUpload()">
-    <ion-icon [name]="icon"></ion-icon>
-    <p> Subir imagen</p>
-</ion-button>
-<p>Imagenes cargadas: {{n}}</p>
+<ion-item>
+    <ion-button shape="round" size="default" (click)="captureAndUpload()">
+        <ion-icon [name]="icon"></ion-icon>
+        <p> Subir imagen</p>
+    </ion-button>
+</ion-item>
+<ion-item>
+    <p>Imagenes cargadas: {{n}}</p>
+</ion-item>

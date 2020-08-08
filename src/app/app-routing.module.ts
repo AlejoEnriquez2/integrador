@@ -50,9 +50,18 @@ const routes: Routes = [
   {
     path: 'respuestas',
     loadChildren: () => import('./shared/pages/respuestas/respuestas.module').then( m => m.RespuestasPageModule)
-  },  {
+  },
+  {
     path: 'trabajos',
     loadChildren: () => import('./shared/pages/trabajos/trabajos.module').then( m => m.TrabajosPageModule)
+  },
+  {
+    path: 'mis-trabajos',
+    loadChildren: () => import('./shared/pages/mis-trabajos/mis-trabajos.module').then( m => m.MisTrabajosPageModule)
+  },
+  {
+    path: 'calificar/:empresa/:usuario/:solicitud',
+    loadChildren: () => import('./shared/pages/calificar/calificar.module').then( m => m.CalificarPageModule)
   }
 
 

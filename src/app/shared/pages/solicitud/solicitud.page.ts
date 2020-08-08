@@ -6,7 +6,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { Respuesta } from '../../models/respuesta';
 import { AuthService } from '../../services/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Solicitud } from '../../models/solicitud';
 
 @Component({
@@ -20,9 +20,10 @@ export class SolicitudPage implements OnInit {
   respuestas: Observable<any>
   empresas = []
   //empresas: { [uid: string]: any} = {}
-  ids:any[] = []
+  ids: any[] = []
   usuario: Observable<any>
-  current_user: Observable<any>
+  current_user: any
+  //current_user: Observable<any>
 
   id: string
 
@@ -36,16 +37,17 @@ export class SolicitudPage implements OnInit {
   constructor(private afs: AngularFirestore,
     private route: ActivatedRoute,
     private solicitudService: SolicitudService,
-    private usuarioService: UsuarioService, 
+    private usuarioService: UsuarioService,
     private router: Router,
     private auth: AuthService,
+    private toastController: ToastController,
     private alertController: AlertController) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')
     this.solicitud = this.solicitudService.getSolicitud(this.id)
     this.respuesta.uid_solicitud = this.id
-    
+
     this.solicitud.subscribe(data => {
       this.usuario = this.usuarioService.getUsuario(data.uid_usuario)
       this.respuesta.uid_usuario = data.uid_usuario
@@ -56,26 +58,62 @@ export class SolicitudPage implements OnInit {
       this.solicitudAceptada.servicios = data.servicios
     })
     this.solicitudAceptada.uid = this.id
-    
-    //this.auth.user.subscribe(user => {
-    //  this.current_user = user;
-    
-    this.auth.getCurrentUser().then(user => {
-      this.current_user = this.auth.user;
-      this.current_user.subscribe(async data => {
 
-        if (data.rol == "employee") {
+    this.auth.user.subscribe(async user => {
+      this.current_user = user;
 
-          this.respuesta.uid_empresa = data.uid
-          const bandera: any = await this.solicitudService.tieneRespuesta(data.uid, this.respuesta.uid_solicitud) 
-          if (bandera != null && bandera !=  "") {
+      //this.auth.getCurrentUser().then(user => {
+      //  this.current_user = this.auth.user;
+      /*  this.current_user.subscribe(async data => {
+  
+          if (data.rol == "employee") {
+  
+            this.respuesta.uid_empresa = data.uid
+            const bandera: any = await this.solicitudService.tieneRespuesta(data.uid, this.respuesta.uid_solicitud) 
+            if (bandera != null && bandera !=  "") {
+              this.cambiarEstado()
+            }
+  
+          } else {
+  
+            this.respuestas = this.solicitudService.getRespuestas(this.id)
+            
+            //obtener número de respuestas
+            this.respuestas.subscribe(data => {
+              this.no_respuestas = data.length
+              this.empresas.splice(0, this.empresas.length)
+              for (let aux of data) {
+                let u = this.usuarioService.getUsuario(aux.uid_empresa)
+                u.subscribe(datos => {
+                  let nueva_respuesta = {
+                    uid_sender: datos.uid,
+                    name_sender: datos.displayName,
+                    calificacion_sender: datos.calificacion,
+                    URL_sender: datos.photoURL,
+                    mensaje: aux.mensaje
+                  }
+                  this.empresas.push(nueva_respuesta)
+                  //this.empresas[aux.uid_empresa] = datos
+                })
+              }
+            })
+          }
+  
+        })*/
+
+      if (this.current_user != null)
+        if (this.current_user.rol == "employee") {
+
+          this.respuesta.uid_empresa = this.current_user.uid
+          const bandera: any = await this.solicitudService.tieneRespuesta(this.current_user.uid, this.respuesta.uid_solicitud)
+          if (bandera != null && bandera != "") {
             this.cambiarEstado()
           }
 
         } else {
 
           this.respuestas = this.solicitudService.getRespuestas(this.id)
-          
+
           //obtener número de respuestas
           this.respuestas.subscribe(data => {
             this.no_respuestas = data.length
@@ -97,7 +135,6 @@ export class SolicitudPage implements OnInit {
           })
         }
 
-      })
     })
   }
 
@@ -106,6 +143,7 @@ export class SolicitudPage implements OnInit {
   }
 
   async presentAlert() {
+
     const alert = await this.alertController.create({
       header: 'Puedes enviar un mensaje!',
       message: 'Indica en qué puedes ayudar, explica por qué eres el mejor para este trabajo (:',
@@ -114,22 +152,22 @@ export class SolicitudPage implements OnInit {
           name: 'msg',
           type: 'textarea',
           placeholder: 'Hola! Me encantaría ayudarte.'
-        }],    
-       buttons: [
-            {
-              text: 'Cancelar',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: () => {
-                console.log('Confirm Cancel');
-              }
-            }, {
-              text: 'Enviar!',
-              handler: (alertData) => {
-                this.enviarAyuda(alertData.msg)
-            }
-            }
-          ]
+        }],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Enviar!',
+          handler: (alertData) => {
+            this.enviarAyuda(alertData.msg)
+          }
+        }
+      ]
     });
 
     await alert.present();
@@ -156,15 +194,20 @@ export class SolicitudPage implements OnInit {
   }
 
   async aceptarAlert(uid_empresa) {
-    const alert = await this.alertController.create({
-      header: 'Agenda tu cita',
-      message: 'Indica la fecha para realizar el trabajo',
-      inputs: [
-        {
-          name: 'date',
-          type: 'date'
-        }],    
-       buttons: [
+
+    this.solicitud.subscribe(async data => {
+      if (data.estado != "solicitando") {
+        this.toast('Ya has contratado a alguien para esta tarea!');
+      } else {
+        const alert = await this.alertController.create({
+          header: 'Agenda tu cita',
+          message: 'Indica la fecha para realizar el trabajo',
+          inputs: [
+            {
+              name: 'date',
+              type: 'date'
+            }],
+          buttons: [
             {
               text: 'Cancelar',
               role: 'cancel',
@@ -176,12 +219,14 @@ export class SolicitudPage implements OnInit {
               text: 'Enviar!',
               handler: (alertData) => {
                 this.aceptarEmpresa(alertData.date, uid_empresa)
-            }
+              }
             }
           ]
-    });
+        });
 
-    await alert.present();
+        await alert.present();
+      }
+    })
   }
 
   aceptarEmpresa(fecha, uid_empresa) {
@@ -191,6 +236,15 @@ export class SolicitudPage implements OnInit {
     this.solicitudAceptada.uid_empleado = uid_empresa
     this.solicitudService.mergeSolicitud(this.solicitudAceptada)
     this.router.navigate(['trabajos']);
+  }
+
+  async toast(text: string, duration: number = 2500, position?) {
+    const toast = await this.toastController.create({
+      message: text,
+      position: position || 'middle',
+      duration: duration
+    });
+    toast.present();
   }
 
 }

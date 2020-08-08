@@ -12,8 +12,11 @@ import { Respuesta } from '../../models/respuesta';
 })
 export class InicioEPage implements OnInit {
 
-  user: Observable<any>;
+  user: any;
+  servicios = []
   solicitudes: Observable<any[]>
+
+  resultados = []
 
   constructor(private auth: AuthService,
     private activatedRoute: ActivatedRoute,
@@ -21,14 +24,22 @@ export class InicioEPage implements OnInit {
     public solicitudservice: SolicitudService) { }
 
   ngOnInit() {
-    this.auth.getCurrentUser().then(user => {
-      this.user = this.auth.user;
-    })
-    this.mostrarSolicitudes();
-  }
+    this.auth.user.subscribe(user => {
+      this.user = user;
+      if (user != null) {
+        this.servicios = user.servicios;
+        this.solicitudes = this.solicitudservice.getSolicitudes();
 
-  mostrarSolicitudes() {
-    this.solicitudes = this.solicitudservice.getSolicitudes();
+        this.solicitudes.subscribe(data => {
+          this.resultados.splice(0, this.resultados.length)
+          for (let aux of data) {
+            let a = this.servicios.filter(value => aux.servicios.includes(value))
+            if (a.length > 0)
+              this.resultados.push(aux)
+          }
+        })
+      }
+    })
   }
 
   trackByFn(index, obj) {
@@ -38,14 +49,14 @@ export class InicioEPage implements OnInit {
   abrirSolicitud(id) {
     this.router.navigate([`solicitud/${id}`])
   }
-/*
-  enviarAyuda(uid_usuario, uid_solicitud) {
-    let respuesta: Respuesta = new Respuesta
-    respuesta.uid_solicitud = uid_solicitud
-    respuesta.uid_usuario = uid_usuario
-    respuesta.uid_empresa = this.user.uid
-    
-    this.solicitudservice.enviarRespuesta(respuesta)
-  }*/
+  /*
+    enviarAyuda(uid_usuario, uid_solicitud) {
+      let respuesta: Respuesta = new Respuesta
+      respuesta.uid_solicitud = uid_solicitud
+      respuesta.uid_usuario = uid_usuario
+      respuesta.uid_empresa = this.user.uid
+      
+      this.solicitudservice.enviarRespuesta(respuesta)
+    }*/
 
 }

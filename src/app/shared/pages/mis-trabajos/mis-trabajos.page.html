@@ -10,7 +10,7 @@
 <ion-content>
     <ion-list>
 
-        <div *ngFor='let trabajo of proximos' (click)="terminar(trabajo.uid_empresa, trabajo.uid_usuario, trabajo.uid)">
+        <div *ngFor='let trabajo of proximos'>
             <ion-item>
                 <ion-avatar slot="start">
                     <img [src]="trabajo.URL_empresa" />
@@ -34,6 +34,7 @@
                     </ion-col>
                 </ion-row>
             </ion-grid>
+
         </div>
 
     </ion-list>

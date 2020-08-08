@@ -48,7 +48,7 @@ export class AuthService {
       const user = await this.afAuth.currentUser;
       return await user.updateProfile({
         displayName: name,
-        photoURL: "https://goo.gl/7kz9qG"
+        photoURL: "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/solicitudes%2Fuser.JPG?alt=media&token=bc089e23-4b1b-4925-b67c-be6fdcd8acfd"
       });
     } catch (err) {
       console.error("Error" +  JSON.stringify(err));

@@ -19,7 +19,9 @@ export class RespuestasPage implements OnInit {
   ngOnInit() {
     this.auth.user.subscribe(async data => {
       this.empresa = data;
-      this.respuestas = this.solicitudService.getMisRespuestas(data.uid);
+      if (data != null) {
+        this.respuestas = this.solicitudService.getMisRespuestas(data.uid);
+      }
     })
 
   }
@@ -31,7 +33,7 @@ export class RespuestasPage implements OnInit {
   mostrar() {
     this.respuestas.subscribe(data => {
       console.log(data)
-    }) 
+    })
   }
 
 }

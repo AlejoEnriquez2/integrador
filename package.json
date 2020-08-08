@@ -37,6 +37,7 @@
     "cordova-plugin-filechooser": "^1.2.0",
     "cordova-plugin-googleplus": "^8.5.0",
     "firebase": "^7.17.1",
+    "ionic-rating": "^2.0.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

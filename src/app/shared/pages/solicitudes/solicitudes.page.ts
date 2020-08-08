@@ -21,8 +21,9 @@ export class SolicitudesPage implements OnInit {
   ngOnInit() {
     this.auth.user.subscribe(async data => {
       this.usuario = data;
-      //this.solicitudes = this.solicitudService.getSolicitudByUsuario(data.uid)
-      this.solicitudes = this.solicitudService.getSolicitudByUsuario("uid_usuario", data.uid, "solicitando")
+      if (data != null) {
+        this.solicitudes = this.solicitudService.getSolicitudByUsuario("uid_usuario", data.uid, "solicitando")
+      }
     })
   }
 

@@ -16,11 +16,6 @@ export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
-      title: 'Inicio',
-      url: 'inicio',
-      icon: 'mail'
-    },
-    {
       title: 'Mi Perfil',
       url: '/folder/Outbox',
       icon: 'person'
@@ -71,20 +66,5 @@ export class AppComponent implements OnInit {
   async logout() {
     await this.auth.logout();
     this.router.navigate(['folder/Inbox']);
-  }
-
-  async respuestas() {
-    this.selectedIndex = 100
-    this.router.navigate(['respuestas']);
-  }
-
-  async solicitudes() {
-    this.selectedIndex = 100
-    this.router.navigate(['solicitudes']);
-  }
-
-  async trabajos() {
-    this.selectedIndex = 101
-    this.router.navigate(['trabajos']);
   }
 }

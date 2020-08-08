@@ -20,10 +20,12 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { ChatComponent } from './components/chat/chat.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, ChatComponent],
+  entryComponents: [ ChatComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -31,7 +33,8 @@ import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    FormsModule
   ],
   providers: [
     StatusBar,

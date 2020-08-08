@@ -1,3 +1,23 @@
-<p>
-  chat works!
-</p>
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-button slot="start" (click)="closeChat()">
+            <ion-icon name="close"></ion-icon>
+        </ion-button>
+        <ion-title>{{nombre}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ul *ngIf="(chat | async) as chat">
+        <li *ngFor="let mensaje of chat.mensajes">{{mensaje.content}} - {{mensaje.sender}}</li>
+    </ul>
+</ion-content>
+
+<ion-footer padding>
+    <ion-item>
+        <ion-textarea [(ngModel)]="mensaje"></ion-textarea>
+        <ion-button color="success" (click)="send()">
+            <ion-icon name="send"></ion-icon>
+        </ion-button>
+    </ion-item>
+</ion-footer>

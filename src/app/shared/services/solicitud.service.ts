@@ -54,6 +54,11 @@ export class SolicitudService {
     return ref.collection('respuestas').valueChanges()
   }
 
+  getRespuesta(uid_solicitud: string, uid_respuesta: string): Observable<any>{
+    const ref = this.afs.collection('solicitudes').doc(uid_solicitud)
+    return ref.collection('respuestas').doc(uid_respuesta).valueChanges()
+  }
+
   getRespuestas2(uid_solicitud: string) {
     console.log('getres2')
     const ref = this.afs.collection('solicitudes').doc(uid_solicitud)

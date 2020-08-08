@@ -20,7 +20,6 @@ export class RateComponent implements OnInit {
   }
 
   getColor(num) {
-    console.log("rate", this.rating)
     if (this.isAboveRating(num))
       return "#8e9c98"
     else

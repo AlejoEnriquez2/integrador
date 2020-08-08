@@ -18,8 +18,13 @@
                 <h2>{{current_user.displayName}}</h2>
                 <h3>{{current_user.email}}</h3>
                 <br>
-                <ion-label>{{calificacion}}</ion-label>
-                <app-rate [rating]="calificacion"></app-rate>
+                <div *ngIf="calificacion != 0">
+                    <ion-label>{{calificacion}}</ion-label>
+                    <app-rate [rating]="calificacion"></app-rate>
+                </div>
+                <div *ngIf="calificacion == 0">
+                    <p class="ion-text-wrap">Este usuario aún no tiene contratos</p>
+                </div>
             </ion-label>
         </ion-item>
 

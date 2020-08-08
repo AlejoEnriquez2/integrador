@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { SolicitudPageRoutingModule } from './solicitud-routing.module';
 
 import { SolicitudPage } from './solicitud.page';
+import { RateComponent } from '../../../components/rate/rate.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { SolicitudPage } from './solicitud.page';
     IonicModule,
     SolicitudPageRoutingModule
   ],
-  declarations: [SolicitudPage]
+  declarations: [SolicitudPage, RateComponent],
+  exports: [RateComponent]
 })
 export class SolicitudPageModule {}

@@ -6,8 +6,9 @@ import { UsuarioService } from '../../services/usuario.service';
 import { Respuesta } from '../../models/respuesta';
 import { AuthService } from '../../services/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, ModalController } from '@ionic/angular';
 import { Solicitud } from '../../models/solicitud';
+import { ChatComponent } from '../../../components/chat/chat.component';
 
 @Component({
   selector: 'app-solicitud',
@@ -41,7 +42,8 @@ export class SolicitudPage implements OnInit {
     private router: Router,
     private auth: AuthService,
     private toastController: ToastController,
-    private alertController: AlertController) { }
+    private alertController: AlertController,
+    private modal: ModalController) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')
@@ -75,11 +77,11 @@ export class SolicitudPage implements OnInit {
 
           this.respuestas = this.solicitudService.getRespuestas(this.id)
 
-          this.respuestas.subscribe(data => {
-            this.no_respuestas = data.length
+          this.respuestas.subscribe(respuestas => {
+            this.no_respuestas = respuestas.length
             this.empresas.splice(0, this.empresas.length)
-            for (let aux of data) {
-              let u = this.usuarioService.getUsuario(aux.uid_empresa)
+            for (let respuesta of respuestas) {
+              let u = this.usuarioService.getUsuario(respuesta.uid_empresa)
               u.subscribe(datos => {
                 let contratado
                 let calificacion
@@ -96,7 +98,9 @@ export class SolicitudPage implements OnInit {
                   contratado: contratado,
                   calificacion_sender: calificacion,
                   URL_sender: datos.photoURL,
-                  mensaje: aux.mensaje
+                  mensaje: respuesta.mensaje,
+                  uid_respuesta: respuesta.uid,
+                  uid_solicitud: respuesta.uid_solicitud
                 }
                 this.empresas.push(nueva_respuesta)
               })
@@ -154,8 +158,15 @@ export class SolicitudPage implements OnInit {
     this.mensaje = false
   }
 
-  enviarMensaje(empresaUid) {
-    this.router.navigate([`mensajes/${empresaUid}`])
+  enviarMensaje(respuesta_uid, solicitud_uid) {
+    console.log("modal", respuesta_uid)
+    this.modal.create({
+      component: ChatComponent,
+      componentProps : {
+        respuesta: respuesta_uid,
+        solicitud: solicitud_uid
+      }
+    }).then((modal) => modal.present())
   }
 
   async aceptarAlert(uid_empresa) {

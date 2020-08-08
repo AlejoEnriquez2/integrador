@@ -78,6 +78,7 @@ export class SolicitarPage implements OnInit {
   }
 
   async ask() {
+    console.log("URLs", this.urls.length);
     if (this.urls.length == 0) {
       const alert = await this.alertController.create({
         header: '¿Seguro no deseas agregar imágenes para mostrar el trabajo final?',
@@ -97,6 +98,7 @@ export class SolicitarPage implements OnInit {
           }
         ]
       });
+      await alert.present();
     } else {
       this.guardarSolicitud()
     } 

@@ -139,6 +139,7 @@ export class CalificarPage implements OnInit {
           }
         ]
       });
+      await alert.present();
     } else {
       this.terminarSolicitud()
     }

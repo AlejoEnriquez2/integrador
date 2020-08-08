@@ -32,6 +32,8 @@ export class SolicitudPage implements OnInit {
   enviar: boolean = false
   mensaje: boolean = true
 
+  res: string
+
   respuesta: Respuesta = new Respuesta;
   solicitudAceptada: Solicitud = new Solicitud;
 
@@ -70,6 +72,8 @@ export class SolicitudPage implements OnInit {
           this.respuesta.uid_empresa = this.current_user.uid
           const bandera: any = await this.solicitudService.tieneRespuesta(this.current_user.uid, this.respuesta.uid_solicitud)
           if (bandera != null && bandera != "") {
+            console.log("bandera", bandera)
+            this.res = bandera[0].uid
             this.cambiarEstado()
           }
 

@@ -40,6 +40,9 @@
                 <ion-label class="ion-text-wrap ion-text-center" color="secondary">
                     Gracias por tu ayuda! Tu respuesta se ha eviado a {{usuario.displayName}}.
                 </ion-label>
+                <ion-button (click)="enviarMensaje(res, respuesta.uid_solicitud)" color="success">
+                    <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
+                </ion-button>
             </ion-item>
 
             <ion-label class="ion-text-center" [hidden]="mensaje" expand="block" color="tertiary">

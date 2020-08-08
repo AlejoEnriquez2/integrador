@@ -1,20 +1,30 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-title>calificar</ion-title>
+    <ion-toolbar color="primary">
+        <ion-title>Terminar solicitud</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <ion-list lines="full">
         <ion-item>
-            <ion-label position="floating">Comentarioa</ion-label>
+            <ion-text color="primary">
+                <h4>Por favor, califica el servicio que has recibido</h4>
+            </ion-text>
+        </ion-item>
+
+        <ion-item class="ion-align-self-center">
+            <app-rating (ratingChange)="calificar($event)"></app-rating>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="floating">Comentarios:</ion-label>
             <ion-textarea rows="6" required type="text" [(ngModel)]="comentario.comentario"></ion-textarea>
         </ion-item>
 
         <app-image-upload [icon]=" 'library' " [type]=" 'library' " (uploadFinished)="imagenCargada($event) "></app-image-upload>
 
         <ion-item>
-            <ion-button shape="round" size="default" (click)="upload() ">subir</ion-button>
+            <ion-button shape="round" size="default" (click)="upload() ">Enviar</ion-button>
         </ion-item>
     </ion-list>
 </ion-content>

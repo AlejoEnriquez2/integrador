@@ -187,7 +187,11 @@ export class SolicitudService {
   }
 
   enviarCalificacion(solicitud: Solicitud, comentario: Comentario) {
-    
+    this.mergeSolicitud(solicitud)
+    const ref = this.afs.collection('users')
+    comentario.uid = this.afs.createId()
+    const param = JSON.parse(JSON.stringify(comentario));
+    ref.doc(comentario.uid_empresa).collection<any>("comentarios").doc(comentario.uid).set(param, {merge:true})
   }
 
 }

@@ -15,6 +15,11 @@ export class UsuarioService {
     let itemDoc = this.afs.doc<any>(`users/${uid}`);
     return itemDoc.valueChanges();
   }
+  
+  getComentarios(uid: string): Observable<any>{
+    let ref = this.afs.doc<any>(`users/${uid}`);
+    return ref.collection("comentarios").valueChanges();
+  }
 
   actualizarEmpresa(empresa: Empresa) {
     console.log("calificacion",empresa.calificacion)

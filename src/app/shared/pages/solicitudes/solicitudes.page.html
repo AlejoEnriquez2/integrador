@@ -10,6 +10,10 @@
 <ion-content>
 
     <ion-list>
+        <ion-item *ngIf="no_solicitudes == 0">
+            <ion-label>No tienes solicitudes pendientes</ion-label>
+        </ion-item>
+
         <ion-item *ngFor='let solicitud of solicitudes |async; trackBy: trackByFn' (click)="abrirSolicitud(solicitud.uid)">
             <ion-thumbnail slot="start">
                 <ion-img [src]="solicitud.galeria_antes[0]"></ion-img>

@@ -9,6 +9,9 @@
 
 <ion-content>
     <ion-list>
+        <ion-item *ngIf="proximos.length == 0">
+            <ion-label>No tienes trabajos pendientes</ion-label>
+        </ion-item>
 
         <div *ngFor='let trabajo of proximos'>
             <ion-item>

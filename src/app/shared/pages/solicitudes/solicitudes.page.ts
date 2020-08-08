@@ -14,6 +14,8 @@ export class SolicitudesPage implements OnInit {
   solicitudes: Observable<any>
   usuario: any
 
+  no_solicitudes: number = 0
+
   constructor(private solicitudService: SolicitudService,
     private auth: AuthService,
     public router: Router) { }
@@ -23,6 +25,9 @@ export class SolicitudesPage implements OnInit {
       this.usuario = data;
       if (data != null) {
         this.solicitudes = this.solicitudService.getSolicitudByUsuario("uid_usuario", data.uid, "solicitando")
+        this.solicitudes.subscribe(data => {
+          this.no_solicitudes = data.length
+        })
       }
     })
   }

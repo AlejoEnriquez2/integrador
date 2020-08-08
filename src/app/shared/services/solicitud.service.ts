@@ -8,6 +8,7 @@ import {File} from "@ionic-native/file/ngx";
 import { first, map } from 'rxjs/operators';
 import { Respuesta } from '../models/respuesta';
 import { Comentario } from '../models/comentario';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class SolicitudService {
   constructor(private afs: AngularFirestore,
     private storage: AngularFireStorage,
     private loadingCtrl: LoadingController,
-    private file: File) { }
+    private file: File,
+    private router: Router) { }
 
   insertSolicitud(solicitud: Solicitud) {
     const refSolicitud = this.afs.collection('solicitudes')

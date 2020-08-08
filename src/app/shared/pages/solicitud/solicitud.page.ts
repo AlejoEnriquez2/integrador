@@ -199,10 +199,6 @@ export class SolicitudPage implements OnInit {
     this.router.navigate([`mensajes/${empresaUid}`])
   }
 
-  verMas(solicitudUid, empresaUid) {
-
-  }
-
   async aceptarAlert(uid_empresa) {
 
     this.solicitud.subscribe(async data => {
@@ -255,6 +251,11 @@ export class SolicitudPage implements OnInit {
       duration: duration
     });
     toast.present();
+  }
+
+  verMas(uid) {
+    console.log("vermas")
+    this.router.navigate([`perfil/${uid}`])
   }
 
 }

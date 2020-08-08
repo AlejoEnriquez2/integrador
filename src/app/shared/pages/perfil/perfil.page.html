@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Perfil</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="(current_user) as current_user">
+        <ion-item>
+            <ion-thumbnail slot="start">
+                <img [src]="current_user.photoURL" />
+            </ion-thumbnail>
+            <ion-label>
+                <h4>Nombre:</h4>
+                <h2>{{current_user.displayName}}</h2>
+                <h3>{{current_user.email}}</h3>
+                <br>
+                <h3 *ngIf="current_user.rol == 'employee'">Calificación: {{calificacion}}</h3>
+            </ion-label>
+        </ion-item>
+
+        <div *ngIf="current_user.rol == 'employee'">
+            <ion-item>
+                <ion-label>
+                    <h4>Descripción:</h4>
+                    <h3 class="ion-text-wrap">{{current_user.descripcion}}</h3>
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <h1>Comentarios</h1>
+            </ion-item>
+
+            <ion-item *ngFor="let comentario of comentarios | async; trackBy: trackByFn">
+                <ion-label>
+                    <h4>Calificación: </h4>
+                    <h3>{{comentario.calificacion}}</h3>
+                </ion-label>
+                <ion-label class="ion-text-wrap">{{comentario.comentario}}</ion-label>
+            </ion-item>
+        </div>
+
+    </div>
+
+</ion-content>

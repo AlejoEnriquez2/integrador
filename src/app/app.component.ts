@@ -17,13 +17,14 @@ export class AppComponent implements OnInit {
   public appPages = [
     {
       title: 'Mi Perfil',
-      url: '/folder/Outbox',
+      url: 'perfil',
       icon: 'person'
     }
   ];
   public labels = ['About'];
 
   user: Observable<any>;
+  id: string
 
   constructor(
     private platform: Platform,
@@ -43,6 +44,7 @@ export class AppComponent implements OnInit {
       this.auth.getCurrentUser().then(user => {
         this.user = this.auth.user;
         if (user) {
+          this.id = user.uid
           if (user.rol == 'user') {
             this.router.navigate(['inicio']);
           } else {
@@ -66,5 +68,10 @@ export class AppComponent implements OnInit {
   async logout() {
     await this.auth.logout();
     this.router.navigate(['folder/Inbox']);
+  }
+
+  perfil() {
+    this.selectedIndex = 103
+    this.router.navigate([`perfil/${this.id}`])
   }
 }

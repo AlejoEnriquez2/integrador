@@ -62,7 +62,12 @@ const routes: Routes = [
   {
     path: 'calificar/:empresa/:usuario/:solicitud',
     loadChildren: () => import('./shared/pages/calificar/calificar.module').then( m => m.CalificarPageModule)
+  },
+  {
+    path: 'perfil/:id',
+    loadChildren: () => import('./shared/pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   }
+
 
 
 

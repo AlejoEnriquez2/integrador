@@ -15,7 +15,7 @@
                 <ion-label>
                     <h3>{{usuario.displayName}}</h3>
                 </ion-label>
-                <ion-button size="small" slot="end">ver más</ion-button>
+                <ion-button size="small" slot="end" (click)="verMas(usuario.uid)">ver más</ion-button>
             </ion-item>
         </div>
 
@@ -51,9 +51,9 @@
             <h2 color="primary">Respuestas</h2>
 
             <ion-list>
-                <div *ngIf="no_respuestas == 0">
+                <ion-item *ngIf="no_respuestas == 0">
                     <ion-label>Todavía no recibes ninguna respuesta</ion-label>
-                </div>
+                </ion-item>
 
                 <ion-item-sliding *ngFor='let empresa of empresas' color="primary-tint">
                     <ion-item-options side="start">
@@ -74,7 +74,7 @@
                     </ion-item>
 
                     <ion-item-options side="end">
-                        <ion-item-option (click)="verMas(solicitud.uid, empresa.uid_sender)" color="tertiary">
+                        <ion-item-option (click)="verMas(empresa.uid_sender)" color="tertiary">
                             <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
                         </ion-item-option>
                         <ion-item-option (click)="enviarMensaje(empresa.uid_sender)" color="success">

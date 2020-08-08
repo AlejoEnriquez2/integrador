@@ -3,7 +3,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Solicitud } from '../../models/solicitud';
 import { AuthService } from '../../services/auth.service';
 import { SolicitudService } from '../../services/solicitud.service';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { ToastController, LoadingController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { tap, finalize, filter } from 'rxjs/operators';
@@ -31,7 +31,8 @@ export class SolicitarPage implements OnInit {
     public router: Router,
     private toastController: ToastController,
     private storage: AngularFireStorage,
-    private loadingCtrl: LoadingController) { }
+    private loadingCtrl: LoadingController,
+    private alertController: AlertController) { }
 
   ngOnInit() {
     this.auth.user.subscribe(data => {
@@ -62,7 +63,7 @@ export class SolicitarPage implements OnInit {
             this.imagenes.map(async file => {
               this.urls.push(file.url)
             })
-            await this.guardarSolicitud()
+            await this.ask()
           }
         })
         .catch(err => {
@@ -70,10 +71,35 @@ export class SolicitarPage implements OnInit {
           alert(JSON.stringify(err))
         });
       } else {
-        await this.guardarSolicitud();
+        await this.ask();
       }
 
     }
+  }
+
+  async ask() {
+    if (this.urls.length == 0) {
+      const alert = await this.alertController.create({
+        header: '¿Seguro no deseas agregar imágenes para mostrar el trabajo final?',
+        buttons: [
+          {
+            text: 'Agregar imágenes',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: 'Enviar sin imágenes',
+            handler: () => {
+              this.guardarSolicitud()
+            }
+          }
+        ]
+      });
+    } else {
+      this.guardarSolicitud()
+    } 
   }
 
   guardarSolicitud() {

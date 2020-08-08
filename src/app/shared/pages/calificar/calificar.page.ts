@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Comentario } from '../../models/comentario';
 import { Solicitud } from '../../models/solicitud';
 import { SolicitudService } from '../../services/solicitud.service';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { UsuarioService } from '../../services/usuario.service';
@@ -37,7 +37,8 @@ export class CalificarPage implements OnInit {
     private userService: UsuarioService,
     private toastController: ToastController,
     private auth: AuthService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private alertController: AlertController) { }
 
   ngOnInit() {
     this.empresa_uid = this.route.snapshot.paramMap.get('empresa')
@@ -105,7 +106,7 @@ export class CalificarPage implements OnInit {
             this.imagenes.map(async file => {
               this.urls.push(file.url)
             })
-            await this.terminarSolicitud()
+            await this.ask()
           }
         })
         .catch(err => {
@@ -113,9 +114,34 @@ export class CalificarPage implements OnInit {
           alert(JSON.stringify(err))
         });
     } else {
-      await this.terminarSolicitud();
+      await this.ask();
     }
 
+  }
+
+  async ask() {
+    if (this.urls.length == 0) {
+      const alert = await this.alertController.create({
+        header: '¿Seguro no deseas agregar imágenes para mostrar el trabajo final?',
+        buttons: [
+          {
+            text: 'Agregar imágenes',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: 'Enviar sin imágenes',
+            handler: () => {
+              this.terminarSolicitud()
+            }
+          }
+        ]
+      });
+    } else {
+      this.terminarSolicitud()
+    }
   }
 
   terminarSolicitud() {

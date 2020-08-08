@@ -48,7 +48,7 @@ export class AuthService {
       const user = await this.afAuth.currentUser;
       return await user.updateProfile({
         displayName: name,
-        photoURL: "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/solicitudes%2Fuser.JPG?alt=media&token=bc089e23-4b1b-4925-b67c-be6fdcd8acfd"
+        photoURL: "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/root%2Fuser.JPG?alt=media&token=1aadf8fe-8a67-440d-8fe3-e60e3051a4b6"
       });
     } catch (err) {
       console.error("Error" +  JSON.stringify(err));
@@ -134,7 +134,7 @@ export class AuthService {
 
   // Guardar datos del usuario en Firestore
   async updateUserData(usertemp: any, provider: any) {
-    const pathUser = "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/solicitudes%2Fuser.JPG?alt=media&token=bc089e23-4b1b-4925-b67c-be6fdcd8acfd"
+    const pathUser = "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/root%2Fuser.JPG?alt=media&token=1aadf8fe-8a67-440d-8fe3-e60e3051a4b6"
     const doc: any = await this.userExists(usertemp.email);
     let data: any;
     let user: any = JSON.parse(JSON.stringify(usertemp));
@@ -173,7 +173,7 @@ export class AuthService {
 
   // Guardar datos del usuario en Firestore
   async updateUserDataE(usertemp: any, provider: any) {
-    const pathUser = "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/solicitudes%2Fuser.JPG?alt=media&token=bc089e23-4b1b-4925-b67c-be6fdcd8acfd"
+    const pathUser = "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/root%2Fuser.JPG?alt=media&token=1aadf8fe-8a67-440d-8fe3-e60e3051a4b6"
     const doc: any = await this.userExists(usertemp.email);
     let data: any;
     let user: any = JSON.parse(JSON.stringify(usertemp));

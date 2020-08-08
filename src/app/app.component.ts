@@ -67,11 +67,12 @@ export class AppComponent implements OnInit {
 
   async logout() {
     await this.auth.logout();
+    localStorage.clear();
     this.router.navigate(['folder/Inbox']);
   }
 
-  perfil() {
+  perfil(id) {
     this.selectedIndex = 103
-    this.router.navigate([`perfil/${this.id}`])
+    this.router.navigate([`perfil/${id}`])
   }
 }

@@ -33,16 +33,22 @@
             <ion-item>
                 <h1>Comentarios</h1>
             </ion-item>
+            <div *ngFor="let comentario of comentarios">
+                <ion-item>
+                    <div class="avatar">
+                        <ion-avatar>
+                            <img [src]="comentario.userURL" />
+                        </ion-avatar>
+                        <ion-label color="primary" class="ion-text-wrap name">{{comentario.userName}}</ion-label>
+                    </div>
+                    <ion-label>
+                        <app-rate [rating]="comentario.calificacion"></app-rate>
+                        <ion-label class="ion-text-wrap">{{comentario.comentario}}</ion-label>
+                    </ion-label>
+                </ion-item>
+            </div>
 
-            <ion-item *ngFor="let comentario of comentarios | async; trackBy: trackByFn">
-                <ion-label>
-                    <h4>Calificación: </h4>
-                    <h3>{{comentario.calificacion}}</h3>
-                </ion-label>
-                <ion-label class="ion-text-wrap">{{comentario.comentario}}</ion-label>
-            </ion-item>
         </div>
-
     </div>
 
 </ion-content>

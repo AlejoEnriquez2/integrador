@@ -62,45 +62,6 @@ export class SolicitudPage implements OnInit {
     this.auth.user.subscribe(async user => {
       this.current_user = user;
 
-      //this.auth.getCurrentUser().then(user => {
-      //  this.current_user = this.auth.user;
-      /*  this.current_user.subscribe(async data => {
-  
-          if (data.rol == "employee") {
-  
-            this.respuesta.uid_empresa = data.uid
-            const bandera: any = await this.solicitudService.tieneRespuesta(data.uid, this.respuesta.uid_solicitud) 
-            if (bandera != null && bandera !=  "") {
-              this.cambiarEstado()
-            }
-  
-          } else {
-  
-            this.respuestas = this.solicitudService.getRespuestas(this.id)
-            
-            //obtener número de respuestas
-            this.respuestas.subscribe(data => {
-              this.no_respuestas = data.length
-              this.empresas.splice(0, this.empresas.length)
-              for (let aux of data) {
-                let u = this.usuarioService.getUsuario(aux.uid_empresa)
-                u.subscribe(datos => {
-                  let nueva_respuesta = {
-                    uid_sender: datos.uid,
-                    name_sender: datos.displayName,
-                    calificacion_sender: datos.calificacion,
-                    URL_sender: datos.photoURL,
-                    mensaje: aux.mensaje
-                  }
-                  this.empresas.push(nueva_respuesta)
-                  //this.empresas[aux.uid_empresa] = datos
-                })
-              }
-            })
-          }
-  
-        })*/
-
       if (this.current_user != null)
         if (this.current_user.rol == "employee") {
 
@@ -114,7 +75,6 @@ export class SolicitudPage implements OnInit {
 
           this.respuestas = this.solicitudService.getRespuestas(this.id)
 
-          //obtener número de respuestas
           this.respuestas.subscribe(data => {
             this.no_respuestas = data.length
             this.empresas.splice(0, this.empresas.length)
@@ -139,7 +99,6 @@ export class SolicitudPage implements OnInit {
                   mensaje: aux.mensaje
                 }
                 this.empresas.push(nueva_respuesta)
-                //this.empresas[aux.uid_empresa] = datos
               })
             }
           })

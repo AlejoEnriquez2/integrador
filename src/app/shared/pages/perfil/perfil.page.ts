@@ -15,7 +15,8 @@ export class PerfilPage implements OnInit {
   usuario_uid: string
   calificacion
 
-  comentarios: Observable<any>
+  coments: Observable<any>
+  comentarios = []
 
   constructor(private auth: AuthService,
     private route: ActivatedRoute,
@@ -34,8 +35,22 @@ export class PerfilPage implements OnInit {
             this.calificacion = user.calificacion / user.numeroContratos
           }
 
-          this.comentarios = this.userservice.getComentarios(this.usuario_uid)
+          this.coments = this.userservice.getComentarios(this.usuario_uid)
+          this.coments.subscribe(comentarios => {
+            this.comentarios.splice(0, this.comentarios.length)
+            for (let comentario of comentarios) {
+              this.userservice.getUsuario(comentario.uid_usuario).subscribe(usuario => {
+              let data = {
+                userName: usuario.displayName,
+                userURL: usuario.photoURL,
+                comentario: comentario.comentario,
+                calificacion: comentario.calificacion
+              }
+              this.comentarios.push(data)
+              })
+            }
 
+          })
         }
       }
 

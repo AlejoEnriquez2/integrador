@@ -40,8 +40,8 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
       this.auth.getCurrentUser().then(user => {
+        console.log("Usuario?: ", user);
         this.user = this.auth.user;
         if (user) {
           this.id = user.uid

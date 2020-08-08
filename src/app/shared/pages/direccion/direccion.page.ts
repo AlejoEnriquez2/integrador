@@ -30,10 +30,16 @@ export class DireccionPage implements OnInit {
   }
 
   agregarDireccion() {
-    console.log(this.direccion);
-    this.direction.insertDireccion(this.direccion);
-    this.toast('Usuario creado exitosamente');
-    this.router.navigate([`inicio`])
+    if (this.direccion.principal == undefined) {
+      alert("La calle principal es un campo obligatorio!")
+    } else if (this.direccion.referencia == undefined) {
+      alert("La referencia es un campo obligatorio!")
+    } else {
+      this.direction.insertDireccion(this.direccion);
+      this.toast('Te has registrado de forma exitosa!');
+      this.router.navigate([`inicio`])   
+    }
+
   }
 
   async toast(text: string, duration: number = 2000, position?) {

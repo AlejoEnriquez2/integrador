@@ -121,10 +121,20 @@ export class SolicitudPage implements OnInit {
             for (let aux of data) {
               let u = this.usuarioService.getUsuario(aux.uid_empresa)
               u.subscribe(datos => {
+                let contratado
+                let calificacion
+                if (datos.numeroContratos == 0) {
+                  contratado = false
+                  calificacion = 0
+                } else {
+                  contratado = true
+                  calificacion = datos.calificacion / datos.numeroContratos
+                }
                 let nueva_respuesta = {
                   uid_sender: datos.uid,
                   name_sender: datos.displayName,
-                  calificacion_sender: datos.calificacion,
+                  contratado: contratado,
+                  calificacion_sender: calificacion,
                   URL_sender: datos.photoURL,
                   mensaje: aux.mensaje
                 }

@@ -9,7 +9,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 
 import * as firebase from "firebase/app";
-import { Platform } from '@ionic/angular';
+import { Platform, LoadingController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 
 
@@ -19,12 +19,15 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
+
   public user: Observable<any>;
+  loading: any;
   
   constructor(private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private platform: Platform,
-    private googlePlus: GooglePlus) { 
+    private googlePlus: GooglePlus,
+    private loadingCtrl: LoadingController) { 
 
     this.user = this.afAuth.authState.pipe(
       switchMap(user => {
@@ -43,15 +46,22 @@ export class AuthService {
 
   async signupUser(name: string, email: string, password: string): Promise<any> {
     try {
+      this.loading = await this.loadingCtrl.create({
+        message: 'Espere..'
+      });  
+      await this.loading.present();
+      
       await this.afAuth.createUserWithEmailAndPassword(email, password);
 
       const user = await this.afAuth.currentUser;
+      this.loading.dismiss();
       return await user.updateProfile({
         displayName: name,
         photoURL: "https://firebasestorage.googleapis.com/v0/b/contactosdb-e7de3.appspot.com/o/root%2Fuser.JPG?alt=media&token=1aadf8fe-8a67-440d-8fe3-e60e3051a4b6"
       });
     } catch (err) {
       console.error("Error" +  JSON.stringify(err));
+      this.loading.dismiss();
       return err;
     }
   }
@@ -109,14 +119,22 @@ export class AuthService {
 
   async emailPasswordLogin(email: string, password: string, rol): Promise<void> {
     try {
+      this.loading = await this.loadingCtrl.create({
+        message: 'Espere..'
+      });  
+      await this.loading.present();
+
       const emailCredential = firebase.auth.EmailAuthProvider.credential(email, password);
       const firebaseUser = await firebase.auth().signInWithCredential(emailCredential);
       if (rol === 'user') {
+        this.loading.dismiss();
         return await this.updateUserData(firebaseUser.user, "email");
       } else {
+        this.loading.dismiss();
         return await this.updateUserDataE(firebaseUser.user, "email");
       }
     } catch (err) {
+      this.loading.dismiss();
       return err;
     } 
   } 
